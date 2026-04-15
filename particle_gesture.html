@@ -136,12 +136,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;heigh
       <input type="range" id="tsS" min="0.02" max="0.15" step="0.01" value="0.06">
     </div>
     <div class="sw">
-      <div class="sr"><span>分散度</span><span class="v" id="spV">0.5</span></div>
-      <input type="range" id="spS" min="0" max="2.0" step="0.05" value="0.5">
+      <div class="sr"><span>分散度</span><span class="v" id="spV">0.20</span></div>
+      <input type="range" id="spS" min="0" max="1.0" step="0.05" value="0.20">
     </div>
     <div class="sw">
-      <div class="sr"><span>扰动</span><span class="v" id="noV">0.15</span></div>
-      <input type="range" id="noS" min="0" max="0.5" step="0.01" value="0.15">
+      <div class="sr"><span>扰动</span><span class="v" id="noV">0.12</span></div>
+      <input type="range" id="noS" min="0" max="0.4" step="0.01" value="0.12">
     </div>
   </div>
 
@@ -174,8 +174,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;heigh
 
 /* ===== 全局状态 ===== */
 const S = {
-  model:'heart', pCount:5000, pSize:2.5, trans:0.06, noise:0.15,
-  scatter:0.5,   // ★ 分散度：粒子偏离模型轮廓的随机距离
+  model:'heart', pCount:5000, pSize:2.5, trans:0.06, noise:0.12,
+  scatter:0.2,   // ★ 分散度：粒子偏离模型轮廓的随机距离
   color:new THREE.Color('#38bdf8'), glow:1.0,
   gesture:1.0, gestureTarget:1.0,
   camOn:false, mpReady:false, lastGT:0, fps:0, lat:0,
@@ -328,13 +328,17 @@ function buildParticles(){
     curArr[i3]=posArr[i3];curArr[i3+1]=posArr[i3+1];curArr[i3+2]=posArr[i3+2];
 
     // ★ 每颗粒子的随机偏移方向（固定，不随帧变化）
-    // 偏移距离由 scatter 滑块控制，方向固定避免每帧抖动
+    // 亮粒子偏移小（贴轮廓→保持形状），暗粒子偏移大（散开→营造氛围）
     const theta=Math.random()*Math.PI*2;
-    const phi=Math.acos(2*Math.random()-1);
-    const dist=Math.random()*0.8+0.2;  // 0.2~1.0 偏移强度因子
-    scatterOffset[i3]=Math.sin(phi)*Math.cos(theta)*dist;
-    scatterOffset[i3+1]=Math.sin(phi)*Math.sin(theta)*dist;
-    scatterOffset[i3+2]=Math.cos(phi)*dist;
+    const phi2=Math.acos(2*Math.random()-1);
+    // 亮度越高的粒子，偏移越小 → 形状清晰
+    // 亮度越低的粒子，偏移越大 → 飘散在外围
+    const bFactor = brightnessArr[i];
+    const scatterFactor = (1.0 - bFactor) * 1.0 + bFactor * 0.1;  // 暗1.0，亮0.1
+    const dist=Math.random()*scatterFactor;
+    scatterOffset[i3]=Math.sin(phi2)*Math.cos(theta)*dist;
+    scatterOffset[i3+1]=Math.sin(phi2)*Math.sin(theta)*dist;
+    scatterOffset[i3+2]=Math.cos(phi2)*dist;
 
     // ★ 每颗粒子的亮度系数
     // 70%的粒子较亮(0.5~1.0)，30%的粒子较暗(0.1~0.4) → 制造层次和分散感
