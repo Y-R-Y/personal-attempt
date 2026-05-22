@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.example.cnnfilter.app-debug-32:/layout_activity_main.xml.flat",
+        "source": "com.example.cnnfilter.app-main-34:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\j2846\\.gradle\\daemon\\9.0.0\\com.example.cnnfilter.app-debug-32:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\j2846\\.gradle\\daemon\\9.0.0\\com.example.cnnfilter.app-main-34:\\layout\\activity_main.xml"
+    }
+]

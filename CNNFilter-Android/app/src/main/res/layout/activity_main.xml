@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <!-- 输入图片 -->
+    <ImageView
+        android:id="@+id/ivInput"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="输入图片"
+        android:scaleType="centerInside"
+        android:background="#EEEEEE"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/divider"
+        app:layout_constraintBottom_toTopOf="@id/tvInputInfo"
+        app:layout_constraintWidth_percent="0.48" />
+
+    <!-- 输入 PSNR -->
+    <TextView
+        android:id="@+id/tvInputInfo"
+        android:text="输入"
+        android:textSize="13sp"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/ivInput"
+        app:layout_constraintEnd_toEndOf="@id/ivInput"
+        app:layout_constraintBottom_toTopOf="@id/controlBar" />
+
+    <!-- 分隔线 -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="#CCCCCC"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tvInputInfo"
+        app:layout_constraintStart_toEndOf="@id/ivInput"
+        app:layout_constraintEnd_toStartOf="@id/ivOutput" />
+
+    <!-- 输出图片 -->
+    <ImageView
+        android:id="@+id/ivOutput"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="输出图片"
+        android:scaleType="centerInside"
+        android:background="#EEEEEE"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvOutputInfo"
+        app:layout_constraintWidth_percent="0.48" />
+
+    <!-- 输出 PSNR + 增益 -->
+    <TextView
+        android:id="@+id/tvOutputInfo"
+        android:text="输出"
+        android:textSize="13sp"
+        android:textColor="#333333"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/ivOutput"
+        app:layout_constraintEnd_toEndOf="@id/ivOutput"
+        app:layout_constraintBottom_toTopOf="@id/controlBar" />
+
+    <!-- 控制栏 -->
+    <LinearLayout
+        android:id="@+id/controlBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Spinner 选择内置测试图 -->
+        <Spinner
+            android:id="@+id/spinnerSamples"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginBottom="2dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvInfo"
+            android:text="正在加载模型..."
+            android:textSize="11sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnPick"
+                android:text="自选图片"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp" />
+
+            <Button
+                android:id="@+id/btnProcess"
+                android:text="滤波处理"
+                android:enabled="false"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

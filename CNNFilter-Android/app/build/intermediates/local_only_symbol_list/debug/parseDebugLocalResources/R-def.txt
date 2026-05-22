@@ -1,0 +1,18 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+id btnPick
+id btnProcess
+id controlBar
+id divider
+id ivInput
+id ivOutput
+id progressBar
+id spinnerSamples
+id tvInfo
+id tvInputInfo
+id tvOutputInfo
+layout activity_main
+string app_name
+style Theme.CNNFilter

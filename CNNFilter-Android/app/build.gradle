@@ -1,0 +1,52 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.example.cnnfilter'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.example.cnnfilter'
+        minSdk 28
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    compileOptions {
+        sourceCompatibility '17'
+        targetCompatibility '17'
+    }
+
+    // 不压缩 onnx 模型，让 ORT 直接 mmap 读取
+    aaptOptions {
+        noCompress 'onnx'
+    }
+}
+
+dependencies {
+    // ONNX Runtime Mobile（含 NNAPI delegate）
+    implementation 'com.microsoft.onnxruntime:onnxruntime-android:1.20.0'
+
+    // Android 基础库
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.exifinterface:exifinterface:1.4.0'
+}
