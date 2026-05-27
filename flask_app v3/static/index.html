@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <title>小学刷题乐园 - 趣味闯关学习</title>
+    <style id="critical-layout">:root{--sidebar-width:240px}body{margin:0;min-height:100vh;background:#f0f4ff}.app-container{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh;width:100%}.sidebar{width:100%;position:sticky;top:0;height:100vh;z-index:100}@media(max-width:1024px){.app-container{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sidebar{height:auto}}</style>
+    <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+    <!-- 成就提示弹窗 -->
+    <div id="achievement-toast" class="achievement-toast">
+        <div class="achievement-toast-icon" id="achievement-toast-icon">🌟</div>
+        <div class="achievement-toast-content">
+            <div class="achievement-toast-title">🎉 成就解锁</div>
+            <div class="achievement-toast-name" id="achievement-toast-name">新手上路</div>
+            <div class="achievement-toast-desc" id="achievement-toast-desc">完成第一次答题</div>
+        </div>
+    </div>
+    
+    <div class="app-container">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🎓 刷题乐园</h1>
+                <p class="subtitle">趣味闯关 · 快乐学习</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item active">
+                    <span class="menu-item-icon">🏠</span>
+                    <span>首页</span>
+                </a>
+                <a href="level.html?subject=math" class="menu-item">
+                    <span class="menu-item-icon">🔢</span>
+                    <span>数学</span>
+                </a>
+                <a href="level.html?subject=chinese" class="menu-item">
+                    <span class="menu-item-icon">📖</span>
+                    <span>语文</span>
+                </a>
+                <a href="level.html?subject=english" class="menu-item">
+                    <span class="menu-item-icon">🔤</span>
+                    <span>英语</span>
+                </a>
+                <a href="level.html?subject=science" class="menu-item">
+                    <span class="menu-item-icon">🔬</span>
+                    <span>科学</span>
+                </a>
+                <a href="level.html?subject=history" class="menu-item">
+                    <span class="menu-item-icon">📜</span>
+                    <span>历史</span>
+                </a>
+                <a href="leaderboard.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>排行榜</span>
+                </a>
+                <a href="wrong-book.html" class="menu-item">
+                    <span class="menu-item-icon">📝</span>
+                    <span>错题本</span>
+                </a>
+                <a href="achievements.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>成就榜</span>
+                </a>
+                <a href="ai-assistant.html" class="menu-item">
+                    <span class="menu-item-icon">🤖</span>
+                    <span>AI学习助手</span>
+                </a>
+                <a href="vip.html" class="menu-item">
+                    <span class="menu-item-icon">👑</span>
+                    <span>VIP会员</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="profile.html" class="menu-item" style="margin-bottom: 15px;">
+                    <span class="menu-item-icon">👤</span>
+                    <span>我的</span>
+                </a>
+                <a id="sidebar-guest-login-btn" class="guest-login-btn" href="login.html?returnUrl=index.html">🔑 登录 / 注册</a>
+                <button class="logout-btn" id="logout-btn" onclick="logout()" style="display:none;">🚪 退出登录</button>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部导航栏 -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <div class="top-bar-brand">
+                        <span class="top-bar-logo">🎓</span>
+                        <span class="top-bar-title">小学刷题乐园</span>
+                    </div>
+                </div>
+                <div class="top-bar-right">
+                    <!-- 游客：登录/注册链接 -->
+                    <div class="top-bar-auth-guest" id="top-bar-auth-guest">
+                        <a href="login.html?returnUrl=index.html" class="top-bar-login-link">登录</a>
+                        <span class="top-bar-sep">/</span>
+                        <a href="login.html?returnUrl=index.html&tab=register" class="top-bar-register-link">注册</a>
+                    </div>
+                    
+                    <!-- 已登录：头像 + 下拉菜单 -->
+                    <div class="top-bar-auth-user" id="top-bar-auth-user" style="display:none;">
+                        <div class="top-bar-avatar-wrapper" id="top-bar-avatar-wrapper">
+                            <div class="top-bar-avatar" id="top-bar-avatar">
+                                <img src="images/default-avatar.webp" alt="头像" id="top-bar-avatar-img">
+                            </div>
+                            <span class="top-bar-username" id="top-bar-username-display">用户名</span>
+                            <svg class="top-bar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        
+                        <!-- 下拉菜单 -->
+                        <div class="avatar-dropdown" id="avatar-dropdown">
+                            <div class="dropdown-user-info">
+                                <div class="dropdown-avatar" id="dropdown-avatar">
+                                    <img src="images/default-avatar.webp" alt="头像">
+                                </div>
+                                <div class="dropdown-user-text">
+                                    <div class="dropdown-username" id="dropdown-username">用户名</div>
+                                    <div class="dropdown-userlevel" id="dropdown-userlevel">⭐ Lv.1</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="profile.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                <span>个人信息</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-item-danger" onclick="logout(); return false;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                <span>退出登录</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 每日任务卡片 -->
+            <div id="daily-task-card" class="daily-task-card standalone">
+                <div class="task-header">
+                    <span>📅 今日任务</span>
+                    <span class="task-status" id="task-status-text">加载中...</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-bar" id="task-progress-bar" style="width: 0%"></div>
+                </div>
+                <div class="task-info" id="task-info-text">
+                    已完成 0 / 10 题
+                </div>
+            </div>
+
+            <div class="stats-panel">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value" id="total-questions">0</div>
+                    <div class="stat-label">总答题数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value" id="correct-count">0</div>
+                    <div class="stat-label">答对题目</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-value" id="accuracy-rate">0%</div>
+                    <div class="stat-label">正确率</div>
+                </div>
+            </div>
+
+            <div class="subject-select">
+                <h2>选择科目</h2>
+                <div class="subject-buttons">
+                    <a href="level.html?subject=math" class="subject-btn math">
+                        <span class="subject-icon">🔢</span>
+                        <span>数学</span>
+                    </a>
+                    <a href="level.html?subject=chinese" class="subject-btn chinese">
+                        <span class="subject-icon">📖</span>
+                        <span>语文</span>
+                    </a>
+                    <a href="level.html?subject=english" class="subject-btn english">
+                        <span class="subject-icon">🔤</span>
+                        <span>英语</span>
+                    </a>
+                    <a href="level.html?subject=science" class="subject-btn science">
+                        <span class="subject-icon">🔬</span>
+                        <span>科学</span>
+                    </a>
+                    <a href="level.html?subject=history" class="subject-btn history">
+                        <span class="subject-icon">📜</span>
+                        <span>历史</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="menu-buttons">
+                <a href="wrong-book.html" class="menu-btn">
+                    <span>📝</span> 错题本
+                </a>
+                <a href="achievements.html" class="menu-btn">
+                    <span>🏆</span> 成就榜
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // 初始化首页
+        window.onload = function() {
+            initApp();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+/* 认证页面样式 */
+
+body.auth-page {
+    margin-left: 0 !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: var(--bg-page);
+    background-image:
+        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(99, 102, 241, 0.2), transparent),
+        radial-gradient(ellipse 50% 40% at 85% 80%, rgba(139, 92, 246, 0.15), transparent);
+}
+
+.auth-container {
+    max-width: 440px;
+    width: 100%;
+    margin: 0 auto;
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: 44px 40px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(99, 102, 241, 0.12);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: var(--gradient-primary);
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.auth-header h1 {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.auth-header .subtitle {
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.auth-container .form-group {
+    margin-bottom: 20px;
+}
+
+.auth-container .form-group label {
+    display: block;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.auth-container .form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-family: inherit;
+    transition: var(--transition);
+    background: #fafbff;
+}
+
+.auth-container .form-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: 16px;
+}
+
+.auth-btn.primary {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.auth-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.auth-btn.secondary {
+    background: #f1f5f9;
+    color: var(--text-primary);
+    border: 2px solid var(--border);
+}
+
+.auth-btn.secondary:hover {
+    background: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.auth-footer p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.auth-footer a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 800;
+    transition: var(--transition);
+}
+
+.auth-footer a:hover {
+    color: var(--accent);
+}
+
+.error-message {
+    background: #fef2f2;
+    color: #b91c1c;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #fecaca;
+}
+
+.success-message {
+    background: #ecfdf5;
+    color: #047857;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #a7f3d0;
+}
+
+/* 忘记密码链接（内联在密码输入框下方） */
+.auth-forgot-link {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.auth-forgot-link:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+/* 步骤指示器 */
+.auth-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+    gap: 0;
+}
+
+.auth-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.auth-step .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    transition: var(--transition);
+}
+
+.auth-step .step-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    transition: var(--transition);
+}
+
+.auth-step.active .step-num {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.auth-step.active .step-label {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.auth-step.done .step-num {
+    background: #10b981;
+    color: white;
+}
+
+.auth-step.done .step-label {
+    color: #10b981;
+}
+
+.auth-step-line {
+    width: 32px;
+    height: 2px;
+    background: #e2e8f0;
+    margin: 0 4px;
+    margin-bottom: 18px;
+    transition: var(--transition);
+}
+
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 32px 24px;
+    }
+
+    .auth-header h1 {
+        font-size: 24px;
+    }
+}

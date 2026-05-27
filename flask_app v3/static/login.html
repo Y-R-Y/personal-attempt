@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <title>登录/注册 - 小学刷题乐园</title>
+    <style>body{margin:0;min-height:100vh;background:#f0f4ff}</style>
+    <link rel="stylesheet" href="styles.css?v=2">
+    <link rel="stylesheet" href="auth.css?v=2">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <!-- 登录表单 -->
+        <div id="login-form" class="auth-form active">
+            <div class="auth-header">
+                <h1>🎓 小学刷题乐园</h1>
+                <p class="subtitle">欢迎回来！</p>
+            </div>
+            
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-username">用户名</label>
+                    <input type="text" id="login-username" placeholder="请输入用户名" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-password">密码</label>
+                    <input type="password" id="login-password" placeholder="请输入密码" required>
+                    <a class="auth-forgot-link" href="#" onclick="showForgotPassword(event)">忘记密码？</a>
+                </div>
+                
+                <button type="submit" class="auth-btn primary">登录</button>
+                
+                <div class="auth-footer">
+                    <p>还没有账号？<a href="#" onclick="showRegister()">立即注册</a></p>
+                    <p><a href="#" onclick="quickStart()">快速开始（无需登录）</a></p>
+                </div>
+            </form>
+            
+            <div id="login-error" class="error-message" style="display:none;"></div>
+        </div>
+
+        <!-- 注册表单 -->
+        <div id="register-form" class="auth-form">
+            <div class="auth-header">
+                <h1>🎓 小学刷题乐园</h1>
+                <p class="subtitle">创建新账号</p>
+            </div>
+            
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="register-username">用户名 *</label>
+                    <input type="text" id="register-username" placeholder="至少 3 个字符" required minlength="3">
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-password">密码 *</label>
+                    <input type="password" id="register-password" placeholder="至少 6 个字符" required minlength="6">
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-confirm">确认密码 *</label>
+                    <input type="password" id="register-confirm" placeholder="再次输入密码" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-student-name">昵称</label>
+                    <input type="text" id="register-student-name" placeholder="显示的名称（可选）">
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-phone">手机号 *</label>
+                    <input type="tel" id="register-phone" placeholder="用于找回密码，11 位手机号" required maxlength="11" pattern="[0-9]{11}">
+                </div>
+                
+                <button type="submit" class="auth-btn primary">注册</button>
+                
+                <div class="auth-footer">
+                    <p>已有账号？<a href="#" onclick="showLogin()">返回登录</a></p>
+                </div>
+            </form>
+            
+            <div id="register-error" class="error-message" style="display:none;"></div>
+        </div>
+
+        <!-- 找回密码表单 -->
+        <div id="forgot-password-form" class="auth-form">
+            <div class="auth-header">
+                <h1>🔑 找回密码</h1>
+                <p class="subtitle">三步验证，安全重置密码</p>
+            </div>
+
+            <!-- 步骤指示器 -->
+            <div class="auth-steps">
+                <div class="auth-step active" id="step-indicator-1">
+                    <span class="step-num">1</span>
+                    <span class="step-label">验证用户名</span>
+                </div>
+                <div class="auth-step-line"></div>
+                <div class="auth-step" id="step-indicator-2">
+                    <span class="step-num">2</span>
+                    <span class="step-label">验证手机</span>
+                </div>
+                <div class="auth-step-line"></div>
+                <div class="auth-step" id="step-indicator-3">
+                    <span class="step-num">3</span>
+                    <span class="step-label">重设密码</span>
+                </div>
+            </div>
+
+            <!-- 步骤一：输入用户名 -->
+            <div id="forgot-step-1">
+                <form onsubmit="handleForgotStep1(event)">
+                    <div class="form-group">
+                        <label for="forgot-username">用户名</label>
+                        <input type="text" id="forgot-username" placeholder="请输入您的用户名" required>
+                    </div>
+                    
+                    <button type="submit" class="auth-btn primary">下一步</button>
+                    
+                    <div class="auth-footer">
+                        <p><a href="#" onclick="showLogin()">← 返回登录</a></p>
+                    </div>
+                </form>
+                
+                <div id="forgot-error-1" class="error-message" style="display:none;"></div>
+            </div>
+
+            <!-- 步骤二：输入手机号 -->
+            <div id="forgot-step-2" style="display:none;">
+                <form onsubmit="handleForgotStep2(event)">
+                    <div class="form-group">
+                        <label for="forgot-phone">注册手机号</label>
+                        <input type="tel" id="forgot-phone" placeholder="请输入注册时使用的手机号" required maxlength="11" pattern="[0-9]{11}">
+                    </div>
+                    
+                    <button type="submit" class="auth-btn primary">验证手机号</button>
+                    
+                    <div class="auth-footer">
+                        <p><a href="#" onclick="showForgotStep(1)">← 上一步</a></p>
+                    </div>
+                </form>
+                
+                <div id="forgot-error-2" class="error-message" style="display:none;"></div>
+            </div>
+
+            <!-- 步骤三：设置新密码 -->
+            <div id="forgot-step-3" style="display:none;">
+                <form onsubmit="handleForgotStep3(event)">
+                    <div class="form-group">
+                        <label for="forgot-new-password">新密码</label>
+                        <input type="password" id="forgot-new-password" placeholder="至少 6 个字符" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="forgot-confirm-password">确认新密码</label>
+                        <input type="password" id="forgot-confirm-password" placeholder="再次输入新密码" required>
+                    </div>
+                    
+                    <button type="submit" class="auth-btn primary">重置密码</button>
+                    
+                    <div class="auth-footer">
+                        <p><a href="#" onclick="showForgotStep(2)">← 上一步</a></p>
+                    </div>
+                </form>
+                
+                <div id="forgot-error-3" class="error-message" style="display:none;"></div>
+            </div>
+
+            <!-- 成功提示 -->
+            <div id="forgot-success" style="display:none;" class="success-message">
+                <p style="text-align:center;font-size:15px;margin:0;">✅ 密码重置成功！</p>
+                <button class="auth-btn primary" style="margin-top:20px;" onclick="showLogin()">返回登录</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

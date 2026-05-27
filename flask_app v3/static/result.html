@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>练习结果 - 小学刷题乐园</title>
+    <style id="critical-layout">:root{--sidebar-width:240px}body{margin:0;min-height:100vh;background:#f0f4ff}.app-container{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh;width:100%}.sidebar{width:100%;position:sticky;top:0;height:100vh;z-index:100}@media(max-width:1024px){.app-container{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sidebar{height:auto}}</style>
+    <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+    <!-- 成就提示弹窗 -->
+    <div id="achievement-toast" class="achievement-toast">
+        <div class="achievement-toast-icon" id="achievement-toast-icon">🌟</div>
+        <div class="achievement-toast-content">
+            <div class="achievement-toast-title">🎉 成就解锁</div>
+            <div class="achievement-toast-name" id="achievement-toast-name">新手上路</div>
+            <div class="achievement-toast-desc" id="achievement-toast-desc">完成第一次答题</div>
+        </div>
+    </div>
+    
+    <div class="app-container">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🎓 刷题乐园</h1>
+                <p class="subtitle">趣味闯关 · 快乐学习</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <span class="menu-item-icon">🏠</span>
+                    <span>首页</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="profile.html" class="menu-item" style="margin-bottom: 15px;">
+                    <span class="menu-item-icon">👤</span>
+                    <span>我的</span>
+                </a>
+                <button class="logout-btn" id="logout-btn" onclick="logout()" style="display:none;">🚪 退出登录</button>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <div class="result-header">
+                <div class="result-emoji" id="result-emoji">🎉</div>
+                <h1 id="result-title">太棒了！</h1>
+            </div>
+
+            <div class="score-circle">
+                <svg viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="score-bg" cx="50" cy="50" r="45"/>
+                    <circle class="score-progress" id="score-progress" cx="50" cy="50" r="45"/>
+                    <text class="score-text" id="score-text" x="50" y="50">90</text>
+                </svg>
+            </div>
+
+            <div class="result-stats">
+                <div class="result-stat">
+                    <span class="stat-label">答对</span>
+                    <span class="stat-value" id="result-correct">9</span>
+                    <span class="stat-unit">题</span>
+                </div>
+                <div class="result-stat">
+                    <span class="stat-label">答错</span>
+                    <span class="stat-value" id="result-wrong">1</span>
+                    <span class="stat-unit">题</span>
+                </div>
+                <div class="result-stat">
+                    <span class="stat-label">用时</span>
+                    <span class="stat-value" id="result-time">05:23</span>
+                    <span class="stat-unit"></span>
+                </div>
+            </div>
+
+            <div class="result-buttons">
+                <button class="result-btn" onclick="window.location.href='wrong-book.html'">
+                    📝 查看错题
+                </button>
+                <button class="result-btn primary" onclick="window.location.href='index.html'">
+                    🏠 返回首页
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // 初始化页面
+        window.onload = function() {
+            initApp();
+            // 从sessionStorage获取结果数据
+            const resultData = JSON.parse(sessionStorage.getItem('lastResult') || '{}');
+            if (resultData.score !== undefined) {
+                displayResult(resultData);
+            }
+        };
+
+        function displayResult(data) {
+            let emoji, title;
+            if (data.score === 100) {
+                emoji = '🏆';
+                title = '太完美了！';
+            } else if (data.score >= 80) {
+                emoji = '🎉';
+                title = '太棒了！';
+            } else if (data.score >= 60) {
+                emoji = '👍';
+                title = '不错哦！';
+            } else {
+                emoji = '💪';
+                title = '继续加油！';
+            }
+            
+            document.getElementById('result-emoji').textContent = emoji;
+            document.getElementById('result-title').textContent = title;
+            
+            const circle = document.getElementById('score-progress');
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (data.score / 100) * circumference;
+            
+            circle.style.strokeDashoffset = circumference;
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+            }, 100);
+            
+            document.getElementById('score-text').textContent = data.score;
+            document.getElementById('result-correct').textContent = data.correct;
+            document.getElementById('result-wrong').textContent = data.wrong;
+            document.getElementById('result-time').textContent = data.time;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <title>VIP会员中心 - 小学刷题乐园</title>
+    <link rel="stylesheet" href="styles.css?v=2">
+    <style>
+        .vip-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .vip-header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+        }
+
+        .vip-header h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .vip-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        /* 会员状态卡片 */
+        .membership-status {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .status-badge.vip {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
+
+        .status-badge.free {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .expiry-info {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* AI使用统计 */
+        .usage-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* 会员权益 */
+        .benefits-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .benefit-item:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            transform: translateY(-2px);
+        }
+
+        .benefit-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .benefit-content h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .benefit-content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* 价格方案 */
+        .pricing-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .pricing-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+        }
+
+        .pricing-card.recommended {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .plan-price {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .plan-price span {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .plan-savings {
+            color: #10b981;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .subscribe-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: auto;
+        }
+
+        .subscribe-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .subscribe-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* FAQ */
+        .faq-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 20px 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🎓 刷题乐园</h1>
+                <p class="subtitle">趣味闯关 · 快乐学习</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <span class="menu-item-icon">🏠</span>
+                    <span>首页</span>
+                </a>
+                <a href="level.html?subject=math" class="menu-item">
+                    <span class="menu-item-icon">🔢</span>
+                    <span>数学</span>
+                </a>
+                <a href="level.html?subject=chinese" class="menu-item">
+                    <span class="menu-item-icon">📖</span>
+                    <span>语文</span>
+                </a>
+                <a href="level.html?subject=english" class="menu-item">
+                    <span class="menu-item-icon">🔤</span>
+                    <span>英语</span>
+                </a>
+                <a href="level.html?subject=science" class="menu-item">
+                    <span class="menu-item-icon">🔬</span>
+                    <span>科学</span>
+                </a>
+                <a href="level.html?subject=history" class="menu-item">
+                    <span class="menu-item-icon">📜</span>
+                    <span>历史</span>
+                </a>
+                <a href="leaderboard.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>排行榜</span>
+                </a>
+                <a href="wrong-book.html" class="menu-item">
+                    <span class="menu-item-icon">📝</span>
+                    <span>错题本</span>
+                </a>
+                <a href="achievements.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>成就榜</span>
+                </a>
+                <a href="ai-assistant.html" class="menu-item">
+                    <span class="menu-item-icon">🤖</span>
+                    <span>AI学习助手</span>
+                </a>
+                <a href="vip.html" class="menu-item active">
+                    <span class="menu-item-icon">👑</span>
+                    <span>VIP会员</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="profile.html" class="menu-item" style="margin-bottom: 15px;">
+                    <span class="menu-item-icon">👤</span>
+                    <span>我的</span>
+                </a>
+                <button class="logout-btn" id="logout-btn" onclick="logout()" style="display:none;">🚪 退出登录</button>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <div class="vip-page">
+                <!-- VIP头部 -->
+                <div class="vip-header">
+                    <h1>🌟 VIP会员中心</h1>
+                    <p>解锁全部AI功能，让学习更高效</p>
+                </div>
+
+                <!-- 会员状态 -->
+                <div class="membership-status">
+                    <div class="status-header">
+                        <div>
+                            <h2 style="margin-bottom: 8px;">当前会员状态</h2>
+                            <p class="expiry-info" id="expiry-info">加载中...</p>
+                        </div>
+                        <div class="status-badge free" id="status-badge">
+                            <span>👤</span>
+                            <span id="status-text">免费用户</span>
+                        </div>
+                    </div>
+
+                    <!-- AI使用统计 -->
+                    <div class="usage-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="used-count">-</div>
+                            <div class="stat-label">已使用次数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="remaining-count">-</div>
+                            <div class="stat-label">剩余次数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="total-quota">3</div>
+                            <div class="stat-label">每月配额</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIP权益 -->
+                <div class="benefits-section">
+                    <h2 class="section-title">✨ VIP专属权益</h2>
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">♾️</div>
+                            <div class="benefit-content">
+                                <h4>无限次AI解析</h4>
+                                <p>错题解析、题目推荐等功能无限次使用</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">📝</div>
+                            <div class="benefit-content">
+                                <h4>AI作文批改</h4>
+                                <p>智能批改作文，给出评分和改进建议</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🗣️</div>
+                            <div class="benefit-content">
+                                <h4>AI口语练习</h4>
+                                <p>设计有趣的对话场景，提升口语能力</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">📊</div>
+                            <div class="benefit-content">
+                                <h4>AI学习报告</h4>
+                                <p>生成周度学习报告，掌握学习进度</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">🗺️</div>
+                            <div class="benefit-content">
+                                <h4>AI知识图谱</h4>
+                                <p>梳理知识点关系，理清学习路径</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">✍️</div>
+                            <div class="benefit-content">
+                                <h4>AI自动出题</h4>
+                                <p>根据知识点自动生成练习题</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 价格方案 -->
+                <div class="pricing-section">
+                    <h2 class="section-title">💰 选择适合你的方案</h2>
+                    <div class="pricing-grid">
+                        <!-- 月度VIP -->
+                        <div class="pricing-card">
+                            <div class="plan-name">月度VIP</div>
+                            <div class="plan-price">¥1<span>/月</span></div>
+                            <ul class="plan-features">
+                                <li>所有AI功能无限次使用</li>
+                                <li>优先客服支持</li>
+                                <li>新功能优先体验</li>
+                            </ul>
+                            <button class="subscribe-btn" onclick="subscribe('monthly')">立即开通</button>
+                        </div>
+
+                        <!-- 年度VIP -->
+                        <div class="pricing-card recommended">
+                            <div class="recommended-badge">推荐</div>
+                            <div class="plan-name">年度VIP</div>
+                            <div class="plan-price">¥10<span>/年</span></div>
+                            <div class="plan-savings">省 ¥2</div>
+                            <ul class="plan-features">
+                                <li>所有AI功能无限次使用</li>
+                                <li>优先客服支持</li>
+                                <li>新功能优先体验</li>
+                                <li>专属VIP标识</li>
+                            </ul>
+                            <button class="subscribe-btn" onclick="subscribe('yearly')">立即开通</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ -->
+                <div class="faq-section">
+                    <h2 class="section-title">❓ 常见问题</h2>
+                    <div class="faq-item">
+                        <div class="faq-question">Q: 免费用户和VIP有什么区别？</div>
+                        <div class="faq-answer">
+                            A: 免费用户每月可以使用3次AI功能（错题解析、题目推荐、AI对话），而VIP用户可以无限次使用所有AI功能，包括作文批改、口语练习、学习报告等高级功能。
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Q: 如何支付？</div>
+                        <div class="faq-answer">
+                            A: 目前支持模拟支付（测试用）。正式上线后将接入微信支付和支付宝，让您支付更便捷。
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Q: VIP到期后怎么办？</div>
+                        <div class="faq-answer">
+                            A: VIP到期后会自动降级为免费用户，您可以随时续费重新享受VIP权益。
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">Q: 可以退款吗？</div>
+                        <div class="faq-answer">
+                            A: 目前暂不支持退款。如有问题请联系客服。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // 检查登录状态
+        window.onload = function() {
+            if (!isLoggedIn()) {
+                showLoginRequiredModal();
+                return;
+            }
+            initApp();
+            loadMembershipStatus();
+        };
+
+        // 加载会员状态
+        async function loadMembershipStatus() {
+            const userId = getCurrentUserId();
+            if (!userId) return;
+
+            try {
+                // 获取用户信息
+                const user = await apiRequest(`/user/${userId}`);
+                
+                // 获取会员状态
+                const subResponse = await fetch(`${API_BASE_URL}/subscription/check?user_id=${userId}`);
+                const subData = await subResponse.json();
+
+                // 更新UI
+                updateMembershipUI(user, subData);
+            } catch (error) {
+                console.error('加载会员状态失败:', error);
+            }
+        }
+
+        // 更新会员状态UI
+        function updateMembershipUI(user, subscription) {
+            const statusBadge = document.getElementById('status-badge');
+            const statusText = document.getElementById('status-text');
+            const expiryInfo = document.getElementById('expiry-info');
+            const usedCount = document.getElementById('used-count');
+            const remainingCount = document.getElementById('remaining-count');
+            const totalQuota = document.getElementById('total-quota');
+
+            if (subscription.is_vip) {
+                // VIP用户
+                statusBadge.className = 'status-badge vip';
+                statusText.textContent = 'VIP会员';
+                
+                const endDate = new Date(subscription.end_date);
+                const daysLeft = Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24));
+                expiryInfo.textContent = `到期时间：${subscription.end_date}（还剩${daysLeft}天）`;
+                
+                usedCount.textContent = '∞';
+                remainingCount.textContent = '∞';
+                totalQuota.textContent = '∞';
+            } else {
+                // 免费用户
+                statusBadge.className = 'status-badge free';
+                statusText.textContent = '免费用户';
+                expiryInfo.textContent = '升级VIP享受无限次AI功能';
+                
+                const used = user.ai_usage_count || 0;
+                const quota = user.monthly_ai_quota || 3;
+                const remaining = Math.max(0, quota - used);
+                
+                usedCount.textContent = used;
+                remainingCount.textContent = remaining;
+                totalQuota.textContent = quota;
+            }
+        }
+
+        // 订阅VIP
+        async function subscribe(type) {
+            const userId = getCurrentUserId();
+            if (!userId) {
+                alert('请先登录');
+                return;
+            }
+
+            const typeName = type === 'monthly' ? '月度VIP' : '年度VIP';
+            const price = type === 'monthly' ? '19.9' : '199';
+            
+            if (!confirm(`确定要开通${typeName}吗？\n价格：¥${price}`)) {
+                return;
+            }
+
+            try {
+                const response = await apiRequest('/subscription/create', 'POST', {
+                    user_id: userId,
+                    type: type
+                });
+
+                if (response.success) {
+                    alert(`🎉 开通成功！\n到期时间：${response.end_date}`);
+                    // 刷新页面
+                    location.reload();
+                }
+            } catch (error) {
+                alert('开通失败，请稍后重试');
+                console.error('开通VIP失败:', error);
+            }
+        }
+    </script>
+</body>
+</html>

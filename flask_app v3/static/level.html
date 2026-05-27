@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6366f1">
+    <title>选择关卡 - 小学刷题乐园</title>
+    <style id="critical-layout">:root{--sidebar-width:240px}body{margin:0;min-height:100vh;background:#f0f4ff}.app-container{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh;width:100%}.sidebar{width:100%;position:sticky;top:0;height:100vh;z-index:100}@media(max-width:1024px){.app-container{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sidebar{height:auto}}</style>
+    <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🎓 刷题乐园</h1>
+                <p class="subtitle">趣味闯关 · 快乐学习</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <span class="menu-item-icon">🏠</span>
+                    <span>首页</span>
+                </a>
+                <a href="level.html?subject=math" class="menu-item" data-subject="math">
+                    <span class="menu-item-icon">🔢</span>
+                    <span>数学</span>
+                </a>
+                <a href="level.html?subject=chinese" class="menu-item" data-subject="chinese">
+                    <span class="menu-item-icon">📖</span>
+                    <span>语文</span>
+                </a>
+                <a href="level.html?subject=english" class="menu-item" data-subject="english">
+                    <span class="menu-item-icon">🔤</span>
+                    <span>英语</span>
+                </a>
+                <a href="level.html?subject=science" class="menu-item" data-subject="science">
+                    <span class="menu-item-icon">🔬</span>
+                    <span>科学</span>
+                </a>
+                <a href="level.html?subject=history" class="menu-item" data-subject="history">
+                    <span class="menu-item-icon">📜</span>
+                    <span>历史</span>
+                </a>
+                <a href="leaderboard.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>排行榜</span>
+                </a>
+                <a href="wrong-book.html" class="menu-item">
+                    <span class="menu-item-icon">📝</span>
+                    <span>错题本</span>
+                </a>
+                <a href="achievements.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>成就榜</span>
+                </a>
+                <a href="ai-assistant.html" class="menu-item">
+                    <span class="menu-item-icon">🤖</span>
+                    <span>AI学习助手</span>
+                </a>
+                <a href="vip.html" class="menu-item">
+                    <span class="menu-item-icon">👑</span>
+                    <span>VIP会员</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="profile.html" class="menu-item" style="margin-bottom: 15px;">
+                    <span class="menu-item-icon">👤</span>
+                    <span>我的</span>
+                </a>
+                <button class="logout-btn" id="logout-btn" onclick="logout()" style="display:none;">🚪 退出登录</button>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <div class="header">
+                <h1 id="subject-title">选择关卡</h1>
+                <p class="subtitle">选择你要挑战的年级</p>
+            </div>
+            
+            <div class="level-grid" id="level-grid">
+                <!-- 关卡将通过JavaScript动态生成 -->
+            </div>
+        </main>
+    </div>
+
+    <!-- 题目数量选择弹窗 -->
+    <div id="count-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:20px; padding:36px 32px 28px; max-width:380px; width:90%; box-shadow:0 20px 60px rgba(99,102,241,0.18); text-align:center;">
+            <div style="font-size:2.2rem; margin-bottom:8px;">🎯</div>
+            <h2 style="margin:0 0 6px; font-size:1.3rem; color:#1e1b4b;">选择题目数量</h2>
+            <p style="color:#6b7280; font-size:0.9rem; margin:0 0 24px;">从题库中随机抽取，每次都不一样！</p>
+            
+            <div id="count-options" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px;">
+                <button class="count-btn" data-count="5" onclick="highlightCount(5)"
+                    style="padding:16px; border-radius:14px; border:2px solid #e0e7ff; background:#f5f3ff; cursor:pointer; font-size:1rem; font-weight:700; color:#6366f1; transition:all .18s;">
+                    5 题<br><span style="font-size:0.8rem; font-weight:400; color:#818cf8;">约 3 分钟</span>
+                </button>
+                <button class="count-btn" data-count="10" onclick="highlightCount(10)"
+                    style="padding:16px; border-radius:14px; border:2px solid #e0e7ff; background:#f5f3ff; cursor:pointer; font-size:1rem; font-weight:700; color:#6366f1; transition:all .18s;">
+                    10 题 ✨<br><span style="font-size:0.8rem; font-weight:400; color:#818cf8;">推荐 · 约 6 分钟</span>
+                </button>
+                <button class="count-btn" data-count="15" onclick="highlightCount(15)"
+                    style="padding:16px; border-radius:14px; border:2px solid #e0e7ff; background:#f5f3ff; cursor:pointer; font-size:1rem; font-weight:700; color:#6366f1; transition:all .18s;">
+                    15 题<br><span style="font-size:0.8rem; font-weight:400; color:#818cf8;">约 10 分钟</span>
+                </button>
+                <button class="count-btn" data-count="20" onclick="highlightCount(20)"
+                    style="padding:16px; border-radius:14px; border:2px solid #e0e7ff; background:#f5f3ff; cursor:pointer; font-size:1rem; font-weight:700; color:#6366f1; transition:all .18s;">
+                    20 题<br><span style="font-size:0.8rem; font-weight:400; color:#818cf8;">约 15 分钟</span>
+                </button>
+            </div>
+            
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; background:#f9fafb; border-radius:12px; padding:10px 14px;">
+                <label style="font-size:0.9rem; color:#374151; white-space:nowrap;">自定义：</label>
+                <input id="custom-count" type="number" min="1" max="50" placeholder="1~50"
+                    style="flex:1; padding:7px 12px; border:1.5px solid #d1d5db; border-radius:8px; font-size:0.95rem; outline:none; color:#1e1b4b;">
+                <button onclick="applyCustomCount()"
+                    style="padding:7px 16px; background:#6366f1; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:0.9rem; font-weight:600;">选择</button>
+            </div>
+
+            <!-- 开始答题确认按钮（默认隐藏，选中数量后显示） -->
+            <button id="start-quiz-btn" onclick="confirmAndStart()" style="display:none; width:100%; padding:14px; margin-bottom:14px; background:linear-gradient(135deg,#6366f1,#818cf8); color:#fff; border:none; border-radius:14px; cursor:pointer; font-size:1.05rem; font-weight:700; letter-spacing:.03em; box-shadow:0 4px 16px rgba(99,102,241,0.3); transition:all .18s;">
+                🚀 开始答题
+            </button>
+            
+            <button onclick="closeCountModal()"
+                style="color:#9ca3af; background:none; border:none; cursor:pointer; font-size:0.9rem; padding:4px 8px;">取消</button>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // 当前待跳转的关卡信息
+        let _pendingLevel = null;
+        let _pendingSubject = null;
+        // 当前已选中的题目数量（null 表示未选）
+        let _selectedCount = null;
+        
+        /**
+         * 打开题目数量选择弹窗
+         */
+        function openCountModal(subject, level) {
+            _pendingLevel = level;
+            _pendingSubject = subject;
+            _selectedCount = null;
+            document.getElementById('count-modal').style.display = 'flex';
+            document.getElementById('custom-count').value = '';
+            document.getElementById('start-quiz-btn').style.display = 'none';
+            // 重置所有按钮样式
+            document.querySelectorAll('.count-btn').forEach(btn => {
+                btn.style.border = '2px solid #e0e7ff';
+                btn.style.background = '#f5f3ff';
+                btn.style.color = '#6366f1';
+            });
+        }
+        
+        /**
+         * 关闭弹窗
+         */
+        function closeCountModal() {
+            document.getElementById('count-modal').style.display = 'none';
+        }
+        
+        /**
+         * 高亮选中预设数量（不立即跳转）
+         */
+        function highlightCount(count) {
+            _selectedCount = count;
+            // 清空自定义输入框
+            document.getElementById('custom-count').value = '';
+            // 更新按钮高亮
+            document.querySelectorAll('.count-btn').forEach(btn => {
+                const btnCount = parseInt(btn.getAttribute('data-count'));
+                if (btnCount === count) {
+                    btn.style.border = '2px solid #6366f1';
+                    btn.style.background = '#6366f1';
+                    btn.style.color = '#fff';
+                } else {
+                    btn.style.border = '2px solid #e0e7ff';
+                    btn.style.background = '#f5f3ff';
+                    btn.style.color = '#6366f1';
+                }
+            });
+            // 显示"开始答题"按钮
+            document.getElementById('start-quiz-btn').style.display = 'block';
+        }
+        
+        /**
+         * 自定义数量"选择"按钮：将输入值设为选中，显示开始按钮
+         */
+        function applyCustomCount() {
+            const val = parseInt(document.getElementById('custom-count').value);
+            if (!val || val < 1 || val > 50) {
+                alert('请输入 1 到 50 之间的数字！');
+                return;
+            }
+            _selectedCount = val;
+            // 取消预设按钮高亮
+            document.querySelectorAll('.count-btn').forEach(btn => {
+                btn.style.border = '2px solid #e0e7ff';
+                btn.style.background = '#f5f3ff';
+                btn.style.color = '#6366f1';
+            });
+            // 显示"开始答题"按钮
+            document.getElementById('start-quiz-btn').style.display = 'block';
+        }
+        
+        /**
+         * 点击"开始答题"按钮，确认并跳转
+         */
+        function confirmAndStart() {
+            if (!_selectedCount) {
+                alert('请先选择题目数量！');
+                return;
+            }
+            closeCountModal();
+            window.location.href = `quiz.html?subject=${_pendingSubject}&level=${_pendingLevel}&count=${_selectedCount}`;
+        }
+        
+        // 点击弹窗背景关闭
+        document.getElementById('count-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeCountModal();
+        });
+        
+        // 自定义输入框回车 → 等同于点"选择"按钮
+        document.getElementById('custom-count').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') applyCustomCount();
+        });
+        
+        // 初始化关卡选择页面
+        window.onload = function() {
+            initApp();
+            initLevelPageWithCount();
+        };
+        
+        /**
+         * 覆盖关卡页初始化，将关卡卡片链接改为触发弹窗
+         */
+        async function initLevelPageWithCount() {
+            // 先执行原始的 initLevelPage
+            await initLevelPage();
+            
+            // 获取当前科目
+            const urlParams = new URLSearchParams(window.location.search);
+            const subject = urlParams.get('subject') || 'math';
+            
+            // 将所有关卡卡片的 href 替换为弹窗触发
+            const levelCards = document.querySelectorAll('#level-grid .level-card');
+            levelCards.forEach(card => {
+                const href = card.getAttribute('href') || '';
+                const m = href.match(/level=(\d+)/);
+                if (m) {
+                    const level = m[1];
+                    card.setAttribute('href', '#');
+                    card.onclick = function(e) {
+                        e.preventDefault();
+                        openCountModal(subject, level);
+                    };
+                }
+            });
+        }
+    </script>
+</body>
+</html>
