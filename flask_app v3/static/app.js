@@ -196,10 +196,10 @@ function updateLoginStatus() {
     if (statusDiv) {
         if (username) {
             statusDiv.textContent = '✅ 已登录：' + username;
-            statusDiv.style.color = '#4caf50';
+            statusDiv.style.color = '#86efac';
         } else {
             statusDiv.textContent = '❌ 未登录';
-            statusDiv.style.color = '#f44336';
+            statusDiv.style.color = '#fca5a5';
         }
     }
     
@@ -484,7 +484,7 @@ async function loadWrongBook() {
         console.log('用户未登录，无法加载错题本');
         const wrongBookList = document.getElementById('wrong-book-list');
         if (wrongBookList) {
-            wrongBookList.innerHTML = '<p style="text-align:center;color:#999;padding:40px;">请先登录后查看错题本</p>';
+            wrongBookList.innerHTML = '<p style="text-align:center;color:#8390A5;padding:40px;">请先登录后查看错题本</p>';
         }
         return;
     }
@@ -494,7 +494,7 @@ async function loadWrongBook() {
     
     const wrongBookList = document.getElementById('wrong-book-list');
     if (wrongBookList) {
-        wrongBookList.innerHTML = '<p style="text-align:center;color:#999;padding:40px;">加载中...</p>';
+        wrongBookList.innerHTML = '<p style="text-align:center;color:#8390A5;padding:40px;">加载中...</p>';
     }
     
     console.log('开始加载错题本，用户ID:', appState.userId);
@@ -511,7 +511,7 @@ async function loadWrongBook() {
         // 显示错误提示
         const wrongBookList = document.getElementById('wrong-book-list');
         if (wrongBookList) {
-            wrongBookList.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">加载失败，请刷新重试</p>';
+            wrongBookList.innerHTML = '<p style="text-align: center; color: #8390A5; padding: 40px;">加载失败，请刷新重试</p>';
         }
     }
 }
@@ -600,8 +600,8 @@ function renderWrongBook(filterSubject = 'all') {
         wrongBookList.innerHTML = `
             <div style="text-align: center; padding: 60px 20px;">
                 <div style="font-size: 64px; margin-bottom: 20px;">📝</div>
-                <h3 style="color: #666; margin-bottom: 10px;">暂无错题</h3>
-                <p style="color: #999;">太棒了！你还没有答错过题目</p>
+                <h3 style="color: #F9DFD3; margin-bottom: 10px;">暂无错题</h3>
+                <p style="color: #8390A5;">太棒了！你还没有答错过题目</p>
             </div>
         `;
         return;
@@ -627,8 +627,8 @@ function renderWrongBook(filterSubject = 'all') {
         wrongBookList.innerHTML = `
             <div style="text-align: center; padding: 60px 20px;">
                 <div style="font-size: 64px; margin-bottom: 20px;">🔍</div>
-                <h3 style="color: #666; margin-bottom: 10px;">该科目暂无错题</h3>
-                <p style="color: #999;">继续加油，保持好成绩！</p>
+                <h3 style="color: #F9DFD3; margin-bottom: 10px;">该科目暂无错题</h3>
+                <p style="color: #8390A5;">继续加油，保持好成绩！</p>
             </div>
         `;
         return;
@@ -645,7 +645,7 @@ function renderWrongBook(filterSubject = 'all') {
             <div class="wrong-item">
                 <div class="wrong-item-header">
                     <span class="wrong-subject">${escapeHtml(subjectName)}</span>
-                    <span style="color: #999; font-size: 14px;">错误 ${item.wrong_count || 1} 次 · ${escapeHtml(date)}</span>
+                    <span style="color: #8390A5; font-size: 14px;">错误 ${item.wrong_count || 1} 次 · ${escapeHtml(date)}</span>
                     <button type="button" class="ai-explain-btn" onclick="explainWithAI(${item.id}, this)">🤖 AI解析</button>
                 </div>
                 <div class="wrong-question">${escapeHtml(item.question || '（题目内容缺失）')}</div>
@@ -820,16 +820,16 @@ async function initLevelPage() {
         const levelCounts = subjectData.level_counts || {};
         const levelNames = ['一', '二', '三', '四', '五', '六'];
         
-        // 年级配色映射 —— 红橙黄绿蓝紫 自然递进
+        // 年级配色映射 —— 暗色主题
         var levelColors = {
-            1: '#f43f5e',  // Rose
-            2: '#f97316',  // Orange
-            3: '#eab308',  // Amber
-            4: '#22c55e',  // Green
-            5: '#3b82f6',  // Blue
-            6: '#8b5cf6'   // Violet
+            1: '#BD6058',  // Brick red
+            2: '#FF6537',  // Orange
+            3: '#e9c46a',  // Gold
+            4: '#4ecdc4',  // Teal
+            5: '#A8B9D6',  // Steel blue
+            6: '#8390A5'   // Muted blue-gray
         };
-        
+
         // 根据数据库中的实际年级生成关卡
         for (var li = 0; li < availableLevels.length; li++) {
             var level = availableLevels[li];
@@ -837,8 +837,8 @@ async function initLevelPage() {
             levelCard.href = `quiz.html?subject=${subject}&level=${level}`;
             levelCard.className = 'level-card';
             levelCard.setAttribute('data-level', level);
-            
-            var accent = levelColors[level] || '#6366f1';
+
+            var accent = levelColors[level] || '#BD6058';
             levelCard.style.setProperty('--card-accent', accent);
             
             var questionCount = levelCounts[level] || 0;
@@ -1548,8 +1548,8 @@ async function selectPracticeOption(index, btn) {
         btn.classList.add('correct');
         feedback.textContent = '✅ 答对了！已从错题本移除';
         feedback.style.display = 'block';
-        feedback.style.background = '#f0fdf4';
-        feedback.style.color = '#16a34a';
+        feedback.style.background = 'rgba(22, 163, 74, 0.15)';
+        feedback.style.color = '#86efac';
         
         // 从错题本删除
         removeFromWrongBook(q.wrong_book_id);
@@ -1563,8 +1563,8 @@ async function selectPracticeOption(index, btn) {
         }
         feedback.textContent = '❌ 答错了，正确答案是：' + q.answer;
         feedback.style.display = 'block';
-        feedback.style.background = '#fef2f2';
-        feedback.style.color = '#dc2626';
+        feedback.style.background = 'rgba(220, 38, 38, 0.15)';
+        feedback.style.color = '#fca5a5';
     }
     
     // 提交答题记录到后端（计入统计）
@@ -1819,7 +1819,7 @@ function updateProfileBadges(unlockedAchievements) {
     
     // 使用后端成就列表（与全部成就页一致），按解锁/未解锁排序
     if (!appState.achievements || appState.achievements.length === 0) {
-        container.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">暂无成就数据</div>';
+        container.innerHTML = '<div style="text-align:center;color:#8390A5;padding:20px;">暂无成就数据</div>';
         return;
     }
     
@@ -2600,8 +2600,8 @@ function renderDailyChart(dailyStats) {
             datasets: [{
                 label: '答题数',
                 data: counts,
-                backgroundColor: 'rgba(99, 102, 241, 0.75)',
-                borderColor: '#6366f1',
+                backgroundColor: 'rgba(189, 96, 88, 0.75)',
+                borderColor: '#BD6058',
                 borderWidth: 1,
                 borderRadius: 6
             }]
@@ -2667,7 +2667,7 @@ function renderSubjectChart(subjectStats) {
     const labels = withData.map(s => subjectNames[s.subject] || s.subject);
     const accuracies = withData.map(s => s.accuracy || 0);
     const totals = withData.map(s => s.total || 0);
-    const colors = ['#6366f1', '#f59e0b', '#10b981', '#ec4899', '#8b5cf6'];
+    const colors = ['#BD6058', '#FF6537', '#4ecdc4', '#e9c46a', '#A8B9D6'];
     
     window.subjectChartInstance = new Chart(ctx, {
         type: 'bar',

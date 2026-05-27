@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/j2846/Desktop/my attempt/flask_app v3/**)",
+      "Bash(sed -i 's/#667eea/#e76f51/g' static/vip.html)",
+      "Bash(sed -i 's/#764ba2/#f4a261/g' static/vip.html)",
+      "Bash(sed -i 's/rgba\\(102, 126, 234, 0.3\\)/rgba\\(231, 111, 81, 0.3\\)/g' static/vip.html)",
+      "Bash(sed -i 's/rgba\\(102, 126, 234, 0.4\\)/rgba\\(231, 111, 81, 0.4\\)/g' static/vip.html)",
+      "Bash(sed -i 's/border-color: #667eea;/border-color: #e76f51;/g' static/account-security.html)",
+      "Bash(sed -i 's/rgba\\(102, 126, 234, 0.1\\)/rgba\\(231, 111, 81, 0.1\\)/g' static/account-security.html)",
+      "Bash(sed -i 's/rgba\\(99,102,241,0.08\\)/rgba\\(231,111,81,0.08\\)/g' static/account-security.html)",
+      "Bash(sed -i 's/border-color: #667eea/border-color: #e76f51/g' static/account-security.html)",
+      "Bash(sed -i 's/border-color: #6366f1/border-color: #e76f51/g' static/account-security.html)",
+      "Bash(python app.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python app.py)",
+      "Bash(curl -s http://127.0.0.1:5000/)",
+      "Bash(curl -s http://127.0.0.1:5000/styles.css)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/styles.css)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/auth.css)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5000/)",
+      "WebFetch(domain:localhost)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/static/styles.css)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/static/auth.css)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/static/index.html)",
+      "Bash(curl -s http://localhost:5000/)"
+    ]
+  }
+}
