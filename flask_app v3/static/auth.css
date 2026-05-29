@@ -1,4 +1,4 @@
-/* 认证页面样式 - 暗色主题 */
+/* 认证页面样式 - 暖色主题 */
 
 body.auth-page {
     margin-left: 0 !important;
@@ -7,21 +7,21 @@ body.auth-page {
     align-items: center;
     justify-content: center;
     padding: 24px;
-    background: var(--bg-page);
+    background: #FFF9F5;
     background-image:
-        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(189, 96, 88, 0.12), transparent),
-        radial-gradient(ellipse 50% 40% at 85% 80%, rgba(255, 101, 55, 0.10), transparent);
+        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(209, 96, 35, 0.08), transparent),
+        radial-gradient(ellipse 50% 40% at 85% 80%, rgba(132, 53, 16, 0.06), transparent);
 }
 
 .auth-container {
     max-width: 440px;
     width: 100%;
     margin: 0 auto;
-    background: #303E56;
+    background: #FBE6DA;
     border-radius: var(--radius-xl);
     padding: 44px 40px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(189, 96, 88, 0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(209, 96, 35, 0.1);
     position: relative;
     overflow: hidden;
 }
@@ -60,7 +60,7 @@ body.auth-page {
 }
 
 .auth-header .subtitle {
-    color: #8390A5;
+    color: #7a4a3a;
     font-size: 15px;
     font-weight: 600;
 }
@@ -71,7 +71,7 @@ body.auth-page {
 
 .auth-container .form-group label {
     display: block;
-    color: #F9DFD3;
+    color: #3D1010;
     font-size: 14px;
     font-weight: 700;
     margin-bottom: 8px;
@@ -80,24 +80,24 @@ body.auth-page {
 .auth-container .form-group input {
     width: 100%;
     padding: 14px 16px;
-    border: 2px solid #3a4a64;
+    border: 2px solid #e8d0c4;
     border-radius: var(--radius-sm);
     font-size: 15px;
     font-family: inherit;
     transition: var(--transition);
-    background: #242B3A;
-    color: #F9DFD3;
+    background: #FFF9F5;
+    color: #3D1010;
 }
 
 .auth-container .form-group input::placeholder {
-    color: #6b7a8f;
+    color: #b8948a;
 }
 
 .auth-container .form-group input:focus {
     outline: none;
-    border-color: #BD6058;
-    background: #303E56;
-    box-shadow: 0 0 0 4px rgba(189, 96, 88, 0.15);
+    border-color: #D16023;
+    background: #FFF9F5;
+    box-shadow: 0 0 0 4px rgba(209, 96, 35, 0.12);
 }
 
 .auth-btn {
@@ -115,23 +115,23 @@ body.auth-page {
 
 .auth-btn.primary {
     background: var(--gradient-primary);
-    color: white;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    color: #FFF4E6;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .auth-btn.primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .auth-btn.secondary {
-    background: #242B3A;
-    color: #F9DFD3;
-    border: 2px solid #3a4a64;
+    background: #FFF9F5;
+    color: #3D1010;
+    border: 2px solid #e8d0c4;
 }
 
 .auth-btn.secondary:hover {
-    background: #303E56;
+    background: #FBE6DA;
     transform: translateY(-1px);
 }
 
@@ -139,62 +139,62 @@ body.auth-page {
     text-align: center;
     margin-top: 24px;
     padding-top: 24px;
-    border-top: 1px solid #3a4a64;
+    border-top: 1px solid #e8d0c4;
 }
 
 .auth-footer p {
-    color: #8390A5;
+    color: #7a4a3a;
     font-size: 14px;
     font-weight: 600;
     margin: 10px 0;
 }
 
 .auth-footer a {
-    color: #BD6058;
+    color: #D16023;
     text-decoration: none;
     font-weight: 800;
     transition: var(--transition);
 }
 
 .auth-footer a:hover {
-    color: #d47a72;
+    color: #a84c1a;
 }
 
 .error-message {
-    background: rgba(220, 38, 38, 0.15);
-    color: #fca5a5;
+    background: #fef2f2;
+    color: #b91c1c;
     padding: 14px 16px;
     border-radius: var(--radius-sm);
     margin-top: 16px;
     font-size: 14px;
     font-weight: 600;
-    border: 1px solid rgba(220, 38, 38, 0.3);
+    border: 1px solid #fecaca;
 }
 
 .success-message {
-    background: rgba(22, 163, 74, 0.15);
-    color: #86efac;
+    background: #f0fdf4;
+    color: #16a34a;
     padding: 14px 16px;
     border-radius: var(--radius-sm);
     margin-top: 16px;
     font-size: 14px;
     font-weight: 600;
-    border: 1px solid rgba(22, 163, 74, 0.3);
+    border: 1px solid #bbf7d0;
 }
 
-/* 忘记密码链接（内联在密码输入框下方） */
+/* 忘记密码链接 */
 .auth-forgot-link {
     display: inline-block;
     margin-top: 6px;
     font-size: 13px;
     font-weight: 600;
-    color: #A8B9D6;
+    color: #1D591E;
     text-decoration: none;
     transition: var(--transition);
 }
 
 .auth-forgot-link:hover {
-    color: #d47a72;
+    color: #D16023;
     text-decoration: underline;
 }
 
@@ -218,8 +218,8 @@ body.auth-page {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #242B3A;
-    color: #6b7a8f;
+    background: #FFF9F5;
+    color: #b8948a;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -231,34 +231,34 @@ body.auth-page {
 .auth-step .step-label {
     font-size: 12px;
     font-weight: 600;
-    color: #6b7a8f;
+    color: #b8948a;
     transition: var(--transition);
 }
 
 .auth-step.active .step-num {
     background: var(--gradient-primary);
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #FFF4E6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .auth-step.active .step-label {
-    color: #BD6058;
+    color: #D16023;
     font-weight: 700;
 }
 
 .auth-step.done .step-num {
-    background: #2a9d8f;
+    background: #4ecdc4;
     color: white;
 }
 
 .auth-step.done .step-label {
-    color: #2a9d8f;
+    color: #4ecdc4;
 }
 
 .auth-step-line {
     width: 32px;
     height: 2px;
-    background: #3a4a64;
+    background: #e8d0c4;
     margin: 0 4px;
     margin-bottom: 18px;
     transition: var(--transition);

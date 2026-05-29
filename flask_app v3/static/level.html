@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#BD6058">
+    <meta name="theme-color" content="#D16023">
     <title>选择关卡 - 小学刷题乐园</title>
-    <style id="critical-layout">:root{--sidebar-width:240px}body{margin:0;min-height:100vh;background:#242B3A}.app-container{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh;width:100%}.sidebar{width:100%;position:sticky;top:0;height:100vh;z-index:100}@media(max-width:1024px){.app-container{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sidebar{height:auto}}</style>
+    <style id="critical-layout">:root{--sidebar-width:240px}body{margin:0;min-height:100vh;background:#FFF9F5}.app-container{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh;width:100%}.sidebar{width:100%;position:sticky;top:0;height:100vh;z-index:100}@media(max-width:1024px){.app-container{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sidebar{height:auto}}</style>
     <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
@@ -88,45 +88,45 @@
 
     <!-- 题目数量选择弹窗 -->
     <div id="count-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:9999; align-items:center; justify-content:center;">
-        <div style="background:#303E56; border-radius:20px; padding:36px 32px 28px; max-width:380px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,0.4); text-align:center;">
+        <div style="background:#FBE6DA; border-radius:20px; padding:36px 32px 28px; max-width:380px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,0.4); text-align:center;">
             <div style="font-size:2.2rem; margin-bottom:8px;">🎯</div>
-            <h2 style="margin:0 0 6px; font-size:1.3rem; color:#F9DFD3;">选择题目数量</h2>
-            <p style="color:#8390A5; font-size:0.9rem; margin:0 0 24px;">从题库中随机抽取，每次都不一样！</p>
+            <h2 style="margin:0 0 6px; font-size:1.3rem; color:#3D1010;">选择题目数量</h2>
+            <p style="color:#7a4a3a; font-size:0.9rem; margin:0 0 24px;">从题库中随机抽取，每次都不一样！</p>
 
             <div id="count-options" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px;">
                 <button class="count-btn" data-count="5" onclick="highlightCount(5)"
-                    style="padding:16px; border-radius:14px; border:2px solid #3a4a64; background:#242B3A; cursor:pointer; font-size:1rem; font-weight:700; color:#F9DFD3; transition:all .18s;">
-                    5 题<br><span style="font-size:0.8rem; font-weight:400; color:#6b7a8f;">约 3 分钟</span>
+                    style="padding:16px; border-radius:14px; border:2px solid #e8d0c4; background:#FFF9F5; cursor:pointer; font-size:1rem; font-weight:700; color:#3D1010; transition:all .18s;">
+                    5 题<br><span style="font-size:0.8rem; font-weight:400; color:#b8948a;">约 3 分钟</span>
                 </button>
                 <button class="count-btn" data-count="10" onclick="highlightCount(10)"
-                    style="padding:16px; border-radius:14px; border:2px solid #3a4a64; background:#242B3A; cursor:pointer; font-size:1rem; font-weight:700; color:#F9DFD3; transition:all .18s;">
-                    10 题 ✨<br><span style="font-size:0.8rem; font-weight:400; color:#6b7a8f;">推荐 · 约 6 分钟</span>
+                    style="padding:16px; border-radius:14px; border:2px solid #e8d0c4; background:#FFF9F5; cursor:pointer; font-size:1rem; font-weight:700; color:#3D1010; transition:all .18s;">
+                    10 题 ✨<br><span style="font-size:0.8rem; font-weight:400; color:#b8948a;">推荐 · 约 6 分钟</span>
                 </button>
                 <button class="count-btn" data-count="15" onclick="highlightCount(15)"
-                    style="padding:16px; border-radius:14px; border:2px solid #3a4a64; background:#242B3A; cursor:pointer; font-size:1rem; font-weight:700; color:#F9DFD3; transition:all .18s;">
-                    15 题<br><span style="font-size:0.8rem; font-weight:400; color:#6b7a8f;">约 10 分钟</span>
+                    style="padding:16px; border-radius:14px; border:2px solid #e8d0c4; background:#FFF9F5; cursor:pointer; font-size:1rem; font-weight:700; color:#3D1010; transition:all .18s;">
+                    15 题<br><span style="font-size:0.8rem; font-weight:400; color:#b8948a;">约 10 分钟</span>
                 </button>
                 <button class="count-btn" data-count="20" onclick="highlightCount(20)"
-                    style="padding:16px; border-radius:14px; border:2px solid #3a4a64; background:#242B3A; cursor:pointer; font-size:1rem; font-weight:700; color:#F9DFD3; transition:all .18s;">
-                    20 题<br><span style="font-size:0.8rem; font-weight:400; color:#6b7a8f;">约 15 分钟</span>
+                    style="padding:16px; border-radius:14px; border:2px solid #e8d0c4; background:#FFF9F5; cursor:pointer; font-size:1rem; font-weight:700; color:#3D1010; transition:all .18s;">
+                    20 题<br><span style="font-size:0.8rem; font-weight:400; color:#b8948a;">约 15 分钟</span>
                 </button>
             </div>
 
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; background:#242B3A; border-radius:12px; padding:10px 14px;">
-                <label style="font-size:0.9rem; color:#8390A5; white-space:nowrap;">自定义：</label>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; background:#FFF9F5; border-radius:12px; padding:10px 14px;">
+                <label style="font-size:0.9rem; color:#7a4a3a; white-space:nowrap;">自定义：</label>
                 <input id="custom-count" type="number" min="1" max="50" placeholder="1~50"
-                    style="flex:1; padding:7px 12px; border:1.5px solid #3a4a64; border-radius:8px; font-size:0.95rem; outline:none; color:#F9DFD3; background:#242B3A;">
+                    style="flex:1; padding:7px 12px; border:1.5px solid #e8d0c4; border-radius:8px; font-size:0.95rem; outline:none; color:#3D1010; background:#FFF9F5;">
                 <button onclick="applyCustomCount()"
-                    style="padding:7px 16px; background:#BD6058; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:0.9rem; font-weight:600;">选择</button>
+                    style="padding:7px 16px; background:#D16023; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:0.9rem; font-weight:600;">选择</button>
             </div>
 
             <!-- 开始答题确认按钮（默认隐藏，选中数量后显示） -->
-            <button id="start-quiz-btn" onclick="confirmAndStart()" style="display:none; width:100%; padding:14px; margin-bottom:14px; background:linear-gradient(135deg,#BD6058,#FF6537); color:#fff; border:none; border-radius:14px; cursor:pointer; font-size:1.05rem; font-weight:700; letter-spacing:.03em; box-shadow:0 4px 16px rgba(0,0,0,0.35); transition:all .18s;">
+            <button id="start-quiz-btn" onclick="confirmAndStart()" style="display:none; width:100%; padding:14px; margin-bottom:14px; background:linear-gradient(135deg,#D16023,#843510); color:#fff; border:none; border-radius:14px; cursor:pointer; font-size:1.05rem; font-weight:700; letter-spacing:.03em; box-shadow:0 4px 16px rgba(0,0,0,0.35); transition:all .18s;">
                 🚀 开始答题
             </button>
 
             <button onclick="closeCountModal()"
-                style="color:#6b7a8f; background:none; border:none; cursor:pointer; font-size:0.9rem; padding:4px 8px;">取消</button>
+                style="color:#b8948a; background:none; border:none; cursor:pointer; font-size:0.9rem; padding:4px 8px;">取消</button>
         </div>
     </div>
 
@@ -152,9 +152,9 @@
             document.getElementById('start-quiz-btn').style.display = 'none';
             // 重置所有按钮样式
             document.querySelectorAll('.count-btn').forEach(btn => {
-                btn.style.border = '2px solid #3a4a64';
-                btn.style.background = '#242B3A';
-                btn.style.color = '#F9DFD3';
+                btn.style.border = '2px solid #e8d0c4';
+                btn.style.background = '#FFF9F5';
+                btn.style.color = '#3D1010';
             });
         }
         
@@ -176,13 +176,13 @@
             document.querySelectorAll('.count-btn').forEach(btn => {
                 const btnCount = parseInt(btn.getAttribute('data-count'));
                 if (btnCount === count) {
-                    btn.style.border = '2px solid #BD6058';
-                    btn.style.background = '#BD6058';
+                    btn.style.border = '2px solid #D16023';
+                    btn.style.background = '#D16023';
                     btn.style.color = '#fff';
                 } else {
-                    btn.style.border = '2px solid #3a4a64';
-                    btn.style.background = '#242B3A';
-                    btn.style.color = '#F9DFD3';
+                    btn.style.border = '2px solid #e8d0c4';
+                    btn.style.background = '#FFF9F5';
+                    btn.style.color = '#3D1010';
                 }
             });
             // 显示"开始答题"按钮
@@ -201,9 +201,9 @@
             _selectedCount = val;
             // 取消预设按钮高亮
             document.querySelectorAll('.count-btn').forEach(btn => {
-                btn.style.border = '2px solid #3a4a64';
-                btn.style.background = '#242B3A';
-                btn.style.color = '#F9DFD3';
+                btn.style.border = '2px solid #e8d0c4';
+                btn.style.background = '#FFF9F5';
+                btn.style.color = '#3D1010';
             });
             // 显示"开始答题"按钮
             document.getElementById('start-quiz-btn').style.display = 'block';

@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#BD6058">
+    <meta name="theme-color" content="#D16023">
 
     <title>AI学习助手 - 小学刷题乐园</title>
 
@@ -30,7 +30,7 @@
 
         .ai-tool-card {
 
-            background: #303E56;
+            background: #FBE6DA;
 
             border-radius: 16px;
 
@@ -50,7 +50,7 @@
 
             transform: translateY(-4px);
 
-            box-shadow: 0 8px 24px rgba(189, 96, 88, 0.3);
+            box-shadow: 0 8px 24px rgba(209, 96, 35, 0.3);
 
             border-color: var(--primary-light);
 
@@ -106,7 +106,7 @@
 
             background: rgba(22, 163, 74, 0.2);
 
-            color: #86efac;
+            color: #16a34a;
 
         }
 
@@ -126,7 +126,7 @@
 
             margin: 0 auto;
 
-            background: #303E56;
+            background: #FBE6DA;
 
             border-radius: 16px;
 
@@ -138,7 +138,7 @@
 
         .chat-header {
 
-            background: linear-gradient(135deg, #BD6058 0%, #FF6537 100%);
+            background: linear-gradient(135deg, #D16023 0%, #843510 100%);
 
             color: white;
 
@@ -156,7 +156,7 @@
 
             padding: 20px;
 
-            background: #242B3A;
+            background: #FFF9F5;
 
         }
 
@@ -184,7 +184,7 @@
 
             border-radius: 50%;
 
-            background: linear-gradient(135deg, #BD6058 0%, #FF6537 100%);
+            background: linear-gradient(135deg, #D16023 0%, #843510 100%);
 
             display: flex;
 
@@ -206,7 +206,7 @@
 
             border-radius: 16px;
 
-            background: #303E56;
+            background: #FBE6DA;
 
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 
@@ -214,7 +214,7 @@
 
         .chat-message.user .chat-bubble {
 
-            background: linear-gradient(135deg, #BD6058 0%, #FF6537 100%);
+            background: linear-gradient(135deg, #D16023 0%, #843510 100%);
 
             color: white;
 
@@ -224,7 +224,7 @@
 
             padding: 16px;
 
-            border-top: 1px solid #3a4a64;
+            border-top: 1px solid #e8d0c4;
 
             display: flex;
 
@@ -238,7 +238,7 @@
 
             padding: 12px 16px;
 
-            border: 2px solid #3a4a64;
+            border: 2px solid #e8d0c4;
 
             border-radius: 12px;
 
@@ -260,7 +260,7 @@
 
             padding: 12px 24px;
 
-            background: linear-gradient(135deg, #BD6058 0%, #FF6537 100%);
+            background: linear-gradient(135deg, #D16023 0%, #843510 100%);
 
             color: white;
 
@@ -298,7 +298,7 @@
 
             margin: 0 auto;
 
-            background: #303E56;
+            background: #FBE6DA;
 
             border-radius: 16px;
 
@@ -334,7 +334,7 @@
 
             padding: 16px;
 
-            border: 2px solid #3a4a64;
+            border: 2px solid #e8d0c4;
 
             border-radius: 12px;
 
@@ -360,7 +360,7 @@
 
             padding: 12px 16px;
 
-            border: 2px solid #3a4a64;
+            border: 2px solid #e8d0c4;
 
             border-radius: 12px;
 
@@ -376,7 +376,7 @@
 
             padding: 16px;
 
-            background: linear-gradient(135deg, #BD6058 0%, #FF6537 100%);
+            background: linear-gradient(135deg, #D16023 0%, #843510 100%);
 
             color: white;
 
@@ -398,7 +398,7 @@
 
             transform: scale(1.02);
 
-            box-shadow: 0 4px 16px rgba(189, 96, 88, 0.4);
+            box-shadow: 0 4px 16px rgba(209, 96, 35, 0.4);
 
         }
 
@@ -416,7 +416,7 @@
 
             padding: 24px;
 
-            background: linear-gradient(135deg, #303E56 0%, #242B3A 100%);
+            background: linear-gradient(135deg, #FBE6DA 0%, #FFF9F5 100%);
 
             border-radius: 12px;
 
@@ -432,6 +432,211 @@
 
         }
 
+        /* ===== 4个AI功能通用表单样式 ===== */
+        .ai-form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #FBE6DA;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+        .ai-form-container h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #3D1010;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ai-form-container .form-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        .ai-form-group {
+            margin-bottom: 20px;
+        }
+        .ai-form-label {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
+            color: #3D1010;
+            margin-bottom: 8px;
+        }
+        .ai-form-input,
+        .ai-form-select,
+        .ai-form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e8d0c4;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #FFF9F5;
+            color: #3D1010;
+            outline: none;
+            transition: border-color 0.3s;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .ai-form-input:focus,
+        .ai-form-select:focus,
+        .ai-form-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(209, 96, 35, 0.15);
+        }
+        .ai-form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .ai-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .ai-form-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .ai-submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient-primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 14px rgba(209, 96, 35, 0.3);
+        }
+        .ai-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(209, 96, 35, 0.45);
+        }
+        .ai-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .ai-result-container {
+            margin-top: 24px;
+            padding: 24px;
+            background: linear-gradient(135deg, #FFF9F5 0%, #FBE6DA 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            display: none;
+            line-height: 1.8;
+            font-size: 15px;
+            color: #3D1010;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .ai-result-container.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        .ai-result-container h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #3D1010;
+        }
+        .ai-result-container h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            color: #D16023;
+        }
+        .ai-result-container strong {
+            color: #D16023;
+        }
+        /* subject checkboxes grid */
+        .ai-subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        .ai-subject-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: #FFF9F5;
+            border: 2px solid #e8d0c4;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            user-select: none;
+        }
+        .ai-subject-checkbox:hover {
+            border-color: var(--primary-light);
+            background: #f0d8cc;
+        }
+        .ai-subject-checkbox input {
+            display: none;
+        }
+        .ai-subject-checkbox.active {
+            border-color: var(--primary);
+            background: rgba(209, 96, 35, 0.15);
+            color: #3D1010;
+        }
+        .ai-subject-checkbox .subj-emoji {
+            font-size: 18px;
+        }
+        /* 加载动画 */
+        .ai-loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+        }
+        .ai-loading.show {
+            display: block;
+        }
+        .ai-loading-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #e8d0c4;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+        .ai-error {
+            display: none;
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: rgba(230, 57, 70, 0.1);
+            border: 1px solid rgba(230, 57, 70, 0.3);
+            border-radius: 10px;
+            color: #e63946;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .ai-error.show {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .ai-form-row {
+                grid-template-columns: 1fr;
+            }
+            .ai-form-container {
+                padding: 20px;
+            }
+            .ai-subject-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 
 </head>
@@ -770,19 +975,315 @@
 
             </div>
 
-            <!-- 其他功能界面占位符-->
+            <!-- ===== AI口语练习 ===== -->
 
-            <div id="other-interface" style="display: none;">
+            <div id="speaking-interface" style="display: none;">
 
-                <div class="essay-form">
+                <div class="ai-form-container">
 
-                    <h2 id="other-title" style="margin-bottom: 24px;"></h2>
+                    <h2>🗣️ AI口语练习</h2>
 
-                    <p style="color: var(--text-secondary); text-align: center; padding: 40px;">
+                    <p class="form-desc">选择主题和难度，AI将为你生成对话场景进行口语练习</p>
 
-                        此功能正在开发中，敬请期待?.. 🚧
+                    <div class="ai-form-group">
 
-                    </p>
+                        <label class="ai-form-label">对话主题</label>
+
+                        <input type="text" class="ai-form-input" id="speaking-topic" placeholder="例如：在餐厅点餐、去图书馆借书、自我介绍...">
+
+                    </div>
+
+                    <div class="ai-form-row">
+
+                        <div class="ai-form-group">
+
+                            <label class="ai-form-label">难度</label>
+
+                            <select class="ai-form-select" id="speaking-difficulty">
+
+                                <option value="easy">简单</option>
+
+                                <option value="medium" selected>中等</option>
+
+                                <option value="hard">困难</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="ai-form-group">
+
+                            <label class="ai-form-label">语言</label>
+
+                            <select class="ai-form-select" id="speaking-language">
+
+                                <option value="english" selected>英语</option>
+
+                                <option value="chinese">中文</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="ai-loading" id="speaking-loading">
+
+                        <div class="ai-loading-spinner"></div>
+
+                        <span>AI正在生成对话场景...</span>
+
+                    </div>
+
+                    <div class="ai-error" id="speaking-error"></div>
+
+                    <button class="ai-submit-btn" id="speaking-submit-btn" onclick="submitSpeaking()">开始练习</button>
+
+                    <div class="ai-result-container" id="speaking-result"></div>
+
+                </div>
+
+                <button class="back-btn" onclick="backToTools()" style="margin-top: 20px;">返回工具列表</button>
+
+            </div>
+
+            <!-- ===== AI智能推荐 ===== -->
+
+            <div id="recommend-interface" style="display: none;">
+
+                <div class="ai-form-container">
+
+                    <h2>🎯 AI智能推荐</h2>
+
+                    <p class="form-desc">根据你的学习情况和薄弱环节，智能推荐适合的练习题</p>
+
+                    <div class="ai-form-group">
+
+                        <label class="ai-form-label">选择科目（可多选）</label>
+
+                        <div class="ai-subject-grid" id="recommend-subjects">
+
+                            <div class="ai-subject-checkbox active" data-subject="math" onclick="toggleRecommendSubject(this)">
+
+                                <span class="subj-emoji">🔢</span> 数学
+
+                            </div>
+
+                            <div class="ai-subject-checkbox active" data-subject="chinese" onclick="toggleRecommendSubject(this)">
+
+                                <span class="subj-emoji">📖</span> 语文
+
+                            </div>
+
+                            <div class="ai-subject-checkbox active" data-subject="english" onclick="toggleRecommendSubject(this)">
+
+                                <span class="subj-emoji">🔤</span> 英语
+
+                            </div>
+
+                            <div class="ai-subject-checkbox active" data-subject="science" onclick="toggleRecommendSubject(this)">
+
+                                <span class="subj-emoji">🔬</span> 科学
+
+                            </div>
+
+                            <div class="ai-subject-checkbox active" data-subject="history" onclick="toggleRecommendSubject(this)">
+
+                                <span class="subj-emoji">📜</span> 历史
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="ai-form-group">
+
+                        <label class="ai-form-label">薄弱知识点（选填）</label>
+
+                        <textarea class="ai-form-textarea" id="recommend-weakpoints" placeholder="例如：分数运算、古诗词背诵、过去时态...&#10;多个知识点请用逗号或换行分隔"></textarea>
+
+                        <p class="ai-form-hint">留空则根据整体学习数据智能推荐</p>
+
+                    </div>
+
+                    <div class="ai-loading" id="recommend-loading">
+
+                        <div class="ai-loading-spinner"></div>
+
+                        <span>AI正在分析你的学习情况...</span>
+
+                    </div>
+
+                    <div class="ai-error" id="recommend-error"></div>
+
+                    <button class="ai-submit-btn" id="recommend-submit-btn" onclick="submitRecommend()">生成推荐</button>
+
+                    <div class="ai-result-container" id="recommend-result"></div>
+
+                </div>
+
+                <button class="back-btn" onclick="backToTools()" style="margin-top: 20px;">返回工具列表</button>
+
+            </div>
+
+            <!-- ===== AI知识图谱 ===== -->
+
+            <div id="knowledge-interface" style="display: none;">
+
+                <div class="ai-form-container">
+
+                    <h2>🗺️ AI知识图谱</h2>
+
+                    <p class="form-desc">选择科目和知识点，AI将生成知识结构图谱帮助理清学习路径</p>
+
+                    <div class="ai-form-row">
+
+                        <div class="ai-form-group">
+
+                            <label class="ai-form-label">科目</label>
+
+                            <select class="ai-form-select" id="knowledge-subject">
+
+                                <option value="math">🔢 数学</option>
+
+                                <option value="chinese">📖 语文</option>
+
+                                <option value="english">🔤 英语</option>
+
+                                <option value="science">🔬 科学</option>
+
+                                <option value="history">📜 历史</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="ai-form-group">
+
+                            <label class="ai-form-label">知识点</label>
+
+                            <input type="text" class="ai-form-input" id="knowledge-topics" placeholder="例如：分数、小数、百分数（多个用逗号分隔）">
+
+                            <p class="ai-form-hint">输入1-3个关联知识点，让AI构建它们的关系图谱</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="ai-loading" id="knowledge-loading">
+
+                        <div class="ai-loading-spinner"></div>
+
+                        <span>AI正在梳理知识结构...</span>
+
+                    </div>
+
+                    <div class="ai-error" id="knowledge-error"></div>
+
+                    <button class="ai-submit-btn" id="knowledge-submit-btn" onclick="submitKnowledge()">生成图谱</button>
+
+                    <div class="ai-result-container" id="knowledge-result"></div>
+
+                </div>
+
+                <button class="back-btn" onclick="backToTools()" style="margin-top: 20px;">返回工具列表</button>
+
+            </div>
+
+            <!-- ===== AI自动出题 ===== -->
+
+            <div id="generate-interface" style="display: none;">
+
+                <div class="ai-form-container">
+
+                    <h2>✍️ AI自动出题</h2>
+
+                    <p class="form-desc">根据科目和知识点，AI自动生成练习题供你练习</p>
+
+                    <div class="ai-form-row">
+
+                        <div class="ai-form-group">
+
+                            <label class="ai-form-label">科目</label>
+
+                            <select class="ai-form-select" id="generate-subject">
+
+                                <option value="math">🔢 数学</option>
+
+                                <option value="chinese">📖 语文</option>
+
+                                <option value="english">🔤 英语</option>
+
+                                <option value="science">🔬 科学</option>
+
+                                <option value="history">📜 历史</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="ai-form-group">
+
+                            <label class="ai-form-label">知识点/主题</label>
+
+                            <input type="text" class="ai-form-input" id="generate-topic" placeholder="例如：分数加减法、唐诗三百首、一般现在时">
+
+                        </div>
+
+                    </div>
+
+                    <div class="ai-form-row">
+
+                        <div class="ai-form-group">
+
+                            <label class="ai-form-label">难度</label>
+
+                            <select class="ai-form-select" id="generate-difficulty">
+
+                                <option value="1">简单</option>
+
+                                <option value="2" selected>中等</option>
+
+                                <option value="3">困难</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="ai-form-group">
+
+                            <label class="ai-form-label">题目数量</label>
+
+                            <select class="ai-form-select" id="generate-count">
+
+                                <option value="3">3题</option>
+
+                                <option value="5" selected>5题</option>
+
+                                <option value="8">8题</option>
+
+                                <option value="10">10题</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="ai-loading" id="generate-loading">
+
+                        <div class="ai-loading-spinner"></div>
+
+                        <span>AI正在生成练习题...</span>
+
+                    </div>
+
+                    <div class="ai-error" id="generate-error"></div>
+
+                    <button class="ai-submit-btn" id="generate-submit-btn" onclick="submitGenerate()">开始出题</button>
+
+                    <div class="ai-result-container" id="generate-result"></div>
 
                 </div>
 
@@ -819,85 +1320,257 @@
         };
 
         // 显示聊天界面
-
         function showChatInterface() {
-
-            document.getElementById('ai-tools-grid').style.display = 'none';
-
+            hideAllInterfaces();
             document.getElementById('chat-interface').style.display = 'block';
-
-            document.getElementById('essay-interface').style.display = 'none';
-
-            document.getElementById('other-interface').style.display = 'none';
-
         }
 
         // 显示作文批改界面
-
         function showEssayCorrection() {
-
-            document.getElementById('ai-tools-grid').style.display = 'none';
-
-            document.getElementById('chat-interface').style.display = 'none';
-
+            hideAllInterfaces();
             document.getElementById('essay-interface').style.display = 'block';
-
-            document.getElementById('other-interface').style.display = 'none';
-
         }
 
-        // 显示其他功能（占位符）
-
+        // 显示口语练习界面
         function showSpeakingPractice() {
-
-            showOtherFeature('🗣️ AI口语练习');
-
+            hideAllInterfaces();
+            document.getElementById('speaking-interface').style.display = 'block';
         }
 
+        // 显示智能推荐界面
         function showQuestionRecommend() {
-
-            showOtherFeature('🎯 AI智能推荐');
-
+            hideAllInterfaces();
+            document.getElementById('recommend-interface').style.display = 'block';
         }
 
+        // 显示知识图谱界面
         function showKnowledgeGraph() {
-
-            showOtherFeature('🗺️ AI知识图谱');
-
+            hideAllInterfaces();
+            document.getElementById('knowledge-interface').style.display = 'block';
         }
 
+        // 显示自动出题界面
         function showQuestionGenerator() {
-
-            showOtherFeature('✍️ AI自动出题');
-
+            hideAllInterfaces();
+            document.getElementById('generate-interface').style.display = 'block';
         }
 
-        function showOtherFeature(title) {
-
+        // 隐藏所有界面
+        function hideAllInterfaces() {
             document.getElementById('ai-tools-grid').style.display = 'none';
-
             document.getElementById('chat-interface').style.display = 'none';
-
             document.getElementById('essay-interface').style.display = 'none';
-
-            document.getElementById('other-interface').style.display = 'block';
-
-            document.getElementById('other-title').textContent = title;
-
+            document.getElementById('speaking-interface').style.display = 'none';
+            document.getElementById('recommend-interface').style.display = 'none';
+            document.getElementById('knowledge-interface').style.display = 'none';
+            document.getElementById('generate-interface').style.display = 'none';
         }
 
         // 返回工具列表
-
         function backToTools() {
-
+            hideAllInterfaces();
             document.getElementById('ai-tools-grid').style.display = 'grid';
+        }
 
-            document.getElementById('chat-interface').style.display = 'none';
+        // 清除Markdown格式符号，保留纯文本
+        function stripMarkdown(text) {
+            return text
+                .replace(/\*\*(.+?)\*\*/g, '$1')        // **bold**
+                .replace(/__(.+?)__/g, '$1')             // __bold__
+                .replace(/^###\s+/gm, '')                // ### heading
+                .replace(/^##\s+/gm, '')                 // ## heading
+                .replace(/^#\s+/gm, '')                  // # heading
+                .replace(/^[-*]\s+/gm, '• ')             // bullet lists
+                .replace(/^\d+[.、]\s+/gm, '')           // numbered lists
+                .replace(/^>+\s*/gm, '')                 // blockquotes
+                .replace(/```[\s\S]*?```/g, '')          // code blocks
+                .replace(/`([^`]+)`/g, '$1')             // inline code
+                .replace(/^---+$/gm, '')                 // horizontal rules
+                .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // [text](url) → text
+                .replace(/\n{3,}/g, '\n\n')              // normalize spacing
+                .trim();
+        }
 
-            document.getElementById('essay-interface').style.display = 'none';
+        // ===== 智能推荐：科目多选切换 =====
+        function toggleRecommendSubject(el) {
+            el.classList.toggle('active');
+        }
 
-            document.getElementById('other-interface').style.display = 'none';
+        // ===== AI口语练习提交 =====
+        async function submitSpeaking() {
+            const userId = getCurrentUserId();
+            if (!userId) { alert('请先登录'); return; }
 
+            const topic = document.getElementById('speaking-topic').value.trim();
+            if (!topic) { alert('请输入对话主题'); return; }
+
+            const difficulty = document.getElementById('speaking-difficulty').value;
+            const language = document.getElementById('speaking-language').value;
+            const btn = document.getElementById('speaking-submit-btn');
+            const loading = document.getElementById('speaking-loading');
+            const error = document.getElementById('speaking-error');
+            const result = document.getElementById('speaking-result');
+
+            btn.disabled = true;
+            btn.textContent = '生成中...';
+            loading.classList.add('show');
+            error.classList.remove('show');
+            result.classList.remove('show');
+
+            try {
+                const response = await apiRequest('/ai/practice-speaking', 'POST', {
+                    user_id: userId,
+                    topic: topic,
+                    difficulty: difficulty,
+                    language: language
+                });
+                result.textContent = stripMarkdown(response.practice);
+                result.classList.add('show');
+            } catch (err) {
+                error.classList.add('show');
+                if (err.response && err.response.need_upgrade) {
+                    error.textContent = '此功能仅限VIP会员使用';
+                    showUpgradeModal();
+                } else {
+                    error.textContent = err.response?.error || '生成失败，请稍后重试';
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '开始练习';
+                loading.classList.remove('show');
+            }
+        }
+
+        // ===== AI智能推荐提交 =====
+        async function submitRecommend() {
+            const userId = getCurrentUserId();
+            if (!userId) { alert('请先登录'); return; }
+
+            const subjectEls = document.querySelectorAll('#recommend-subjects .ai-subject-checkbox.active');
+            const preferred_subjects = Array.from(subjectEls).map(el => el.dataset.subject);
+
+            if (preferred_subjects.length === 0) { alert('请至少选择一个科目'); return; }
+
+            const weakText = document.getElementById('recommend-weakpoints').value.trim();
+            const weak_points = weakText ? weakText.split(/[,，\n]/).map(s => s.trim()).filter(Boolean) : [];
+            const btn = document.getElementById('recommend-submit-btn');
+            const loading = document.getElementById('recommend-loading');
+            const error = document.getElementById('recommend-error');
+            const result = document.getElementById('recommend-result');
+
+            btn.disabled = true;
+            btn.textContent = '生成中...';
+            loading.classList.add('show');
+            error.classList.remove('show');
+            result.classList.remove('show');
+
+            try {
+                const response = await apiRequest('/ai/recommend-questions', 'POST', {
+                    user_id: userId,
+                    weak_points: weak_points,
+                    preferred_subjects: preferred_subjects
+                });
+                result.textContent = stripMarkdown(response.recommendations);
+                result.classList.add('show');
+            } catch (err) {
+                error.classList.add('show');
+                error.textContent = err.response?.error || '推荐失败，请稍后重试';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '生成推荐';
+                loading.classList.remove('show');
+            }
+        }
+
+        // ===== AI知识图谱提交 =====
+        async function submitKnowledge() {
+            const userId = getCurrentUserId();
+            if (!userId) { alert('请先登录'); return; }
+
+            const subject = document.getElementById('knowledge-subject').value;
+            const topicsText = document.getElementById('knowledge-topics').value.trim();
+            if (!topicsText) { alert('请输入知识点'); return; }
+
+            const topics = topicsText.split(/[,，]/).map(s => s.trim()).filter(Boolean);
+            const btn = document.getElementById('knowledge-submit-btn');
+            const loading = document.getElementById('knowledge-loading');
+            const error = document.getElementById('knowledge-error');
+            const result = document.getElementById('knowledge-result');
+
+            btn.disabled = true;
+            btn.textContent = '生成中...';
+            loading.classList.add('show');
+            error.classList.remove('show');
+            result.classList.remove('show');
+
+            try {
+                const response = await apiRequest('/ai/knowledge-graph', 'POST', {
+                    user_id: userId,
+                    subject: subject,
+                    topics: topics
+                });
+                result.textContent = stripMarkdown(response.knowledge_graph);
+                result.classList.add('show');
+            } catch (err) {
+                error.classList.add('show');
+                if (err.response && err.response.need_upgrade) {
+                    error.textContent = '此功能仅限VIP会员使用';
+                    showUpgradeModal();
+                } else {
+                    error.textContent = err.response?.error || '生成失败，请稍后重试';
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '生成图谱';
+                loading.classList.remove('show');
+            }
+        }
+
+        // ===== AI自动出题提交 =====
+        async function submitGenerate() {
+            const userId = getCurrentUserId();
+            if (!userId) { alert('请先登录'); return; }
+
+            const subject = document.getElementById('generate-subject').value;
+            const topic = document.getElementById('generate-topic').value.trim();
+            if (!topic) { alert('请输入知识点/主题'); return; }
+
+            const difficulty = parseInt(document.getElementById('generate-difficulty').value);
+            const count = parseInt(document.getElementById('generate-count').value);
+            const btn = document.getElementById('generate-submit-btn');
+            const loading = document.getElementById('generate-loading');
+            const error = document.getElementById('generate-error');
+            const result = document.getElementById('generate-result');
+
+            btn.disabled = true;
+            btn.textContent = '生成中...';
+            loading.classList.add('show');
+            error.classList.remove('show');
+            result.classList.remove('show');
+
+            try {
+                const response = await apiRequest('/ai/generate-questions', 'POST', {
+                    user_id: userId,
+                    subject: subject,
+                    topic: topic,
+                    difficulty: difficulty,
+                    count: count
+                });
+                result.textContent = stripMarkdown(response.questions);
+                result.classList.add('show');
+            } catch (err) {
+                error.classList.add('show');
+                if (err.response && err.response.need_upgrade) {
+                    error.textContent = '此功能仅限VIP会员使用';
+                    showUpgradeModal();
+                } else {
+                    error.textContent = err.response?.error || '生成失败，请稍后重试';
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '开始出题';
+                loading.classList.remove('show');
+            }
         }
 
         // 发送聊天消息
@@ -948,7 +1621,7 @@
 
                 // 显示AI回复
 
-                addChatMessage(response.reply, 'ai');
+                addChatMessage(stripMarkdown(response.reply), 'ai');
 
             } catch (error) {
 
@@ -1049,8 +1722,7 @@
                 // 显示批改结果
 
                 const resultDiv = document.getElementById('essay-result');
-
-                resultDiv.innerHTML = `<h3 style="margin-bottom: 16px;">批改结果</h3><div style="line-height: 1.8;">${response.correction.replace(/\n/g, '<br>')}</div>`;
+                resultDiv.innerHTML = `<h3 style="margin-bottom: 16px;">批改结果</h3><div style="line-height: 1.8;">${stripMarkdown(response.correction).replace(/\n/g, '<br>')}</div>`;
 
                 resultDiv.classList.add('show');
 

@@ -484,7 +484,7 @@ async function loadWrongBook() {
         console.log('用户未登录，无法加载错题本');
         const wrongBookList = document.getElementById('wrong-book-list');
         if (wrongBookList) {
-            wrongBookList.innerHTML = '<p style="text-align:center;color:#8390A5;padding:40px;">请先登录后查看错题本</p>';
+            wrongBookList.innerHTML = '<p style="text-align:center;color:#7a4a3a;padding:40px;">请先登录后查看错题本</p>';
         }
         return;
     }
@@ -494,7 +494,7 @@ async function loadWrongBook() {
     
     const wrongBookList = document.getElementById('wrong-book-list');
     if (wrongBookList) {
-        wrongBookList.innerHTML = '<p style="text-align:center;color:#8390A5;padding:40px;">加载中...</p>';
+        wrongBookList.innerHTML = '<p style="text-align:center;color:#7a4a3a;padding:40px;">加载中...</p>';
     }
     
     console.log('开始加载错题本，用户ID:', appState.userId);
@@ -511,7 +511,7 @@ async function loadWrongBook() {
         // 显示错误提示
         const wrongBookList = document.getElementById('wrong-book-list');
         if (wrongBookList) {
-            wrongBookList.innerHTML = '<p style="text-align: center; color: #8390A5; padding: 40px;">加载失败，请刷新重试</p>';
+            wrongBookList.innerHTML = '<p style="text-align: center; color: #7a4a3a; padding: 40px;">加载失败，请刷新重试</p>';
         }
     }
 }
@@ -600,8 +600,8 @@ function renderWrongBook(filterSubject = 'all') {
         wrongBookList.innerHTML = `
             <div style="text-align: center; padding: 60px 20px;">
                 <div style="font-size: 64px; margin-bottom: 20px;">📝</div>
-                <h3 style="color: #F9DFD3; margin-bottom: 10px;">暂无错题</h3>
-                <p style="color: #8390A5;">太棒了！你还没有答错过题目</p>
+                <h3 style="color: #3D1010; margin-bottom: 10px;">暂无错题</h3>
+                <p style="color: #7a4a3a;">太棒了！你还没有答错过题目</p>
             </div>
         `;
         return;
@@ -627,8 +627,8 @@ function renderWrongBook(filterSubject = 'all') {
         wrongBookList.innerHTML = `
             <div style="text-align: center; padding: 60px 20px;">
                 <div style="font-size: 64px; margin-bottom: 20px;">🔍</div>
-                <h3 style="color: #F9DFD3; margin-bottom: 10px;">该科目暂无错题</h3>
-                <p style="color: #8390A5;">继续加油，保持好成绩！</p>
+                <h3 style="color: #3D1010; margin-bottom: 10px;">该科目暂无错题</h3>
+                <p style="color: #7a4a3a;">继续加油，保持好成绩！</p>
             </div>
         `;
         return;
@@ -645,7 +645,7 @@ function renderWrongBook(filterSubject = 'all') {
             <div class="wrong-item">
                 <div class="wrong-item-header">
                     <span class="wrong-subject">${escapeHtml(subjectName)}</span>
-                    <span style="color: #8390A5; font-size: 14px;">错误 ${item.wrong_count || 1} 次 · ${escapeHtml(date)}</span>
+                    <span style="color: #7a4a3a; font-size: 14px;">错误 ${item.wrong_count || 1} 次 · ${escapeHtml(date)}</span>
                     <button type="button" class="ai-explain-btn" onclick="explainWithAI(${item.id}, this)">🤖 AI解析</button>
                 </div>
                 <div class="wrong-question">${escapeHtml(item.question || '（题目内容缺失）')}</div>
@@ -702,7 +702,9 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
     
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        const err = new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        err.response = errorData;
+        throw err;
     }
     
     return await response.json();
@@ -822,12 +824,12 @@ async function initLevelPage() {
         
         // 年级配色映射 —— 暗色主题
         var levelColors = {
-            1: '#BD6058',  // Brick red
-            2: '#FF6537',  // Orange
+            1: '#D16023',  // Warm orange
+            2: '#843510',  // Deep brown
             3: '#e9c46a',  // Gold
             4: '#4ecdc4',  // Teal
-            5: '#A8B9D6',  // Steel blue
-            6: '#8390A5'   // Muted blue-gray
+            5: '#1D591E',  // Forest green
+            6: '#7a4a3a'   // Warm brown
         };
 
         // 根据数据库中的实际年级生成关卡
@@ -838,7 +840,7 @@ async function initLevelPage() {
             levelCard.className = 'level-card';
             levelCard.setAttribute('data-level', level);
 
-            var accent = levelColors[level] || '#BD6058';
+            var accent = levelColors[level] || '#D16023';
             levelCard.style.setProperty('--card-accent', accent);
             
             var questionCount = levelCounts[level] || 0;
@@ -1819,7 +1821,7 @@ function updateProfileBadges(unlockedAchievements) {
     
     // 使用后端成就列表（与全部成就页一致），按解锁/未解锁排序
     if (!appState.achievements || appState.achievements.length === 0) {
-        container.innerHTML = '<div style="text-align:center;color:#8390A5;padding:20px;">暂无成就数据</div>';
+        container.innerHTML = '<div style="text-align:center;color:#7a4a3a;padding:20px;">暂无成就数据</div>';
         return;
     }
     
@@ -2600,8 +2602,8 @@ function renderDailyChart(dailyStats) {
             datasets: [{
                 label: '答题数',
                 data: counts,
-                backgroundColor: 'rgba(189, 96, 88, 0.75)',
-                borderColor: '#BD6058',
+                backgroundColor: 'rgba(209, 96, 35, 0.75)',
+                borderColor: '#D16023',
                 borderWidth: 1,
                 borderRadius: 6
             }]
@@ -2667,7 +2669,7 @@ function renderSubjectChart(subjectStats) {
     const labels = withData.map(s => subjectNames[s.subject] || s.subject);
     const accuracies = withData.map(s => s.accuracy || 0);
     const totals = withData.map(s => s.total || 0);
-    const colors = ['#BD6058', '#FF6537', '#4ecdc4', '#e9c46a', '#A8B9D6'];
+    const colors = ['#D16023', '#843510', '#4ecdc4', '#e9c46a', '#1D591E'];
     
     window.subjectChartInstance = new Chart(ctx, {
         type: 'bar',
@@ -2811,7 +2813,7 @@ async function explainWithAI(wrongItemId, btn) {
             user_id: userId,
             question: wrongItem.question,
             user_answer: wrongItem.user_answer || '未作答',
-            correct_answer: wrongItem.answer,
+            correct_answer: wrongItem.correct_answer,
             subject: wrongItem.subject
         });
         

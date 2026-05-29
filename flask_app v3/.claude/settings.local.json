@@ -23,7 +23,14 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/static/styles.css)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/static/auth.css)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:5000/static/index.html)",
-      "Bash(curl -s http://localhost:5000/)"
+      "Bash(curl -s http://localhost:5000/)",
+      "Bash(python backend/app.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python backend/app.py)",
+      "Bash(curl -s http://localhost:5000/static/account-security.html)",
+      "Bash(curl -s http://localhost:5000/account-security)",
+      "Bash(curl -s http://localhost:5000/vip)",
+      "Bash(curl -s http://localhost:5000/wrong-book)",
+      "Bash(curl -s http://localhost:5000/account-security.html)"
     ]
   }
 }
