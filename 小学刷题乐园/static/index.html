@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#D16023">
+    <title>小学刷题乐园 - 趣味闯关学习</title>
+    <style id="critical-layout">:root{--sidebar-width:240px}body{margin:0;min-height:100vh;background:#FFF9F5}.app-container{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh;width:100%}.sidebar{width:100%;position:sticky;top:0;height:100vh;z-index:100}@media(max-width:1024px){.app-container{grid-template-columns:1fr;grid-template-rows:auto 1fr}.sidebar{height:auto}}</style>
+    <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+    <!-- 成就提示弹窗 -->
+    <div id="achievement-toast" class="achievement-toast">
+        <div class="achievement-toast-icon" id="achievement-toast-icon">🌟</div>
+        <div class="achievement-toast-content">
+            <div class="achievement-toast-title">🎉 成就解锁</div>
+            <div class="achievement-toast-name" id="achievement-toast-name">新手上路</div>
+            <div class="achievement-toast-desc" id="achievement-toast-desc">完成第一次答题</div>
+        </div>
+    </div>
+    
+    <div class="app-container">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🎓 刷题乐园</h1>
+                <p class="subtitle">趣味闯关 · 快乐学习</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item active">
+                    <span class="menu-item-icon">🏠</span>
+                    <span>首页</span>
+                </a>
+                <a href="level.html?subject=math" class="menu-item">
+                    <span class="menu-item-icon">🔢</span>
+                    <span>数学</span>
+                </a>
+                <a href="level.html?subject=chinese" class="menu-item">
+                    <span class="menu-item-icon">📖</span>
+                    <span>语文</span>
+                </a>
+                <a href="level.html?subject=english" class="menu-item">
+                    <span class="menu-item-icon">🔤</span>
+                    <span>英语</span>
+                </a>
+                <a href="level.html?subject=science" class="menu-item">
+                    <span class="menu-item-icon">🔬</span>
+                    <span>科学</span>
+                </a>
+                <a href="level.html?subject=history" class="menu-item">
+                    <span class="menu-item-icon">📜</span>
+                    <span>历史</span>
+                </a>
+                <a href="leaderboard.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>排行榜</span>
+                </a>
+                <a href="wrong-book.html" class="menu-item">
+                    <span class="menu-item-icon">📝</span>
+                    <span>错题本</span>
+                </a>
+                <a href="achievements.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>成就榜</span>
+                </a>
+                <a href="ai-assistant.html" class="menu-item">
+                    <span class="menu-item-icon">🤖</span>
+                    <span>AI学习助手</span>
+                </a>
+                <a href="vip.html" class="menu-item">
+                    <span class="menu-item-icon">👑</span>
+                    <span>VIP会员</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="profile.html" class="menu-item" style="margin-bottom: 15px;">
+                    <span class="menu-item-icon">👤</span>
+                    <span>我的</span>
+                </a>
+                <a id="sidebar-guest-login-btn" class="guest-login-btn" href="login.html?returnUrl=index.html">🔑 登录 / 注册</a>
+                <button class="logout-btn" id="logout-btn" onclick="logout()" style="display:none;">🚪 退出登录</button>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部导航栏 -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <div class="top-bar-brand">
+                        <span class="top-bar-logo">🎓</span>
+                        <span class="top-bar-title">小学刷题乐园</span>
+                    </div>
+                </div>
+                <div class="top-bar-right">
+                    <!-- 游客：登录/注册链接 -->
+                    <div class="top-bar-auth-guest" id="top-bar-auth-guest">
+                        <a href="login.html?returnUrl=index.html" class="top-bar-login-link">登录</a>
+                        <span class="top-bar-sep">/</span>
+                        <a href="login.html?returnUrl=index.html&tab=register" class="top-bar-register-link">注册</a>
+                    </div>
+                    
+                    <!-- 已登录：头像 + 下拉菜单 -->
+                    <div class="top-bar-auth-user" id="top-bar-auth-user" style="display:none;">
+                        <div class="top-bar-avatar-wrapper" id="top-bar-avatar-wrapper">
+                            <div class="top-bar-avatar" id="top-bar-avatar">
+                                <img src="images/default-avatar.webp" alt="头像" id="top-bar-avatar-img">
+                            </div>
+                            <span class="top-bar-username" id="top-bar-username-display">用户名</span>
+                            <svg class="top-bar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                        
+                        <!-- 下拉菜单 -->
+                        <div class="avatar-dropdown" id="avatar-dropdown">
+                            <div class="dropdown-user-info">
+                                <div class="dropdown-avatar" id="dropdown-avatar">
+                                    <img src="images/default-avatar.webp" alt="头像">
+                                </div>
+                                <div class="dropdown-user-text">
+                                    <div class="dropdown-username" id="dropdown-username">用户名</div>
+                                    <div class="dropdown-userlevel" id="dropdown-userlevel">⭐ Lv.1</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="profile.html" class="dropdown-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                <span>个人信息</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-item-danger" onclick="logout(); return false;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                <span>退出登录</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 每日任务卡片 -->
+            <div id="daily-task-card" class="daily-task-card standalone">
+                <div class="task-header">
+                    <span>📅 今日任务</span>
+                    <span class="task-status" id="task-status-text">加载中...</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-bar" id="task-progress-bar" style="width: 0%"></div>
+                </div>
+                <div class="task-info" id="task-info-text">
+                    已完成 0 / 10 题
+                </div>
+            </div>
+
+            <div class="stats-panel">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value" id="total-questions">0</div>
+                    <div class="stat-label">总答题数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value" id="correct-count">0</div>
+                    <div class="stat-label">答对题目</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-value" id="accuracy-rate">0%</div>
+                    <div class="stat-label">正确率</div>
+                </div>
+            </div>
+
+            <div class="subject-select">
+                <h2>选择科目</h2>
+                <div class="subject-buttons">
+                    <a href="level.html?subject=math" class="subject-btn math">
+                        <span class="subject-icon">🔢</span>
+                        <span>数学</span>
+                    </a>
+                    <a href="level.html?subject=chinese" class="subject-btn chinese">
+                        <span class="subject-icon">📖</span>
+                        <span>语文</span>
+                    </a>
+                    <a href="level.html?subject=english" class="subject-btn english">
+                        <span class="subject-icon">🔤</span>
+                        <span>英语</span>
+                    </a>
+                    <a href="level.html?subject=science" class="subject-btn science">
+                        <span class="subject-icon">🔬</span>
+                        <span>科学</span>
+                    </a>
+                    <a href="level.html?subject=history" class="subject-btn history">
+                        <span class="subject-icon">📜</span>
+                        <span>历史</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="menu-buttons">
+                <a href="wrong-book.html" class="menu-btn">
+                    <span>📝</span> 错题本
+                </a>
+                <a href="achievements.html" class="menu-btn">
+                    <span>🏆</span> 成就榜
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <!-- AI学习伙伴悬浮窗 -->
+    <div class="ai-chat-overlay" id="ai-chat-overlay" onclick="closeAiChat()"></div>
+
+    <div class="ai-chat-panel" id="ai-chat-panel">
+        <div class="ai-chat-panel-header">
+            <span>💬 AI学习伙伴</span>
+            <div style="display:flex;align-items:center;">
+                <button class="ai-chat-minimize-btn" onclick="minimizeAiChat()" title="最小化">─</button>
+                <button class="ai-chat-close-btn" onclick="closeAiChat()" title="关闭">✕</button>
+            </div>
+        </div>
+        <div class="ai-chat-panel-messages" id="ai-chat-messages">
+            <div class="chat-message">
+                <div class="chat-avatar">🤖</div>
+                <div class="chat-bubble">你好！我是你的AI学习伙伴，有什么问题都可以问我哦！</div>
+            </div>
+        </div>
+        <div class="ai-chat-panel-input-area">
+            <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="输入你的问题..." onkeypress="if(event.key==='Enter') sendFloatingChat()">
+            <button class="ai-chat-send-btn" id="ai-chat-send-btn" onclick="sendFloatingChat()">发送</button>
+        </div>
+    </div>
+
+    <div class="ai-chat-minimized-bar" id="ai-chat-minimized-bar" onclick="restoreAiChat()">
+        <span>💬 AI学习伙伴</span>
+        <button class="minimized-close" onclick="event.stopPropagation();closeAiChat()" title="关闭">✕</button>
+    </div>
+
+    <div class="ai-chat-fab" id="ai-chat-fab">🤖</div>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // 初始化首页
+        window.onload = function() {
+            initApp();
+            initAiFabDrag();
+            restoreAiFabPosition();
+        };
+
+        // ===== 悬浮AI学习伙伴 - 拖动 =====
+        let fabDragState = null;
+
+        function initAiFabDrag() {
+            const fab = document.getElementById('ai-chat-fab');
+            fab.addEventListener('mousedown', onFabPointerDown);
+            fab.addEventListener('touchstart', onFabPointerDown, { passive: false });
+        }
+
+        function onFabPointerDown(e) {
+            const fab = document.getElementById('ai-chat-fab');
+            const rect = fab.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            fabDragState = {
+                startX: clientX,
+                startY: clientY,
+                origLeft: fab.offsetLeft,
+                origTop: fab.offsetTop,
+                moved: false
+            };
+            fab.classList.add('dragging');
+            document.addEventListener('mousemove', onFabPointerMove);
+            document.addEventListener('mouseup', onFabPointerUp);
+            document.addEventListener('touchmove', onFabPointerMove, { passive: false });
+            document.addEventListener('touchend', onFabPointerUp);
+        }
+
+        function onFabPointerMove(e) {
+            if (!fabDragState) return;
+            e.preventDefault();
+            const fab = document.getElementById('ai-chat-fab');
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const dx = clientX - fabDragState.startX;
+            const dy = clientY - fabDragState.startY;
+            if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                fabDragState.moved = true;
+            }
+            if (!fabDragState.moved) return;
+            let left = fabDragState.origLeft + dx;
+            let top = fabDragState.origTop + dy;
+            // 约束在视口内
+            const fabSize = fab.offsetWidth || 60;
+            left = Math.max(0, Math.min(left, window.innerWidth - fabSize));
+            top = Math.max(0, Math.min(top, window.innerHeight - fabSize));
+            fab.style.left = left + 'px';
+            fab.style.top = top + 'px';
+            fab.style.bottom = 'auto';
+            fab.style.right = 'auto';
+        }
+
+        function onFabPointerUp() {
+            if (!fabDragState) return;
+            const fab = document.getElementById('ai-chat-fab');
+            fab.classList.remove('dragging');
+            document.removeEventListener('mousemove', onFabPointerMove);
+            document.removeEventListener('mouseup', onFabPointerUp);
+            document.removeEventListener('touchmove', onFabPointerMove);
+            document.removeEventListener('touchend', onFabPointerUp);
+            const wasDrag = fabDragState.moved;
+            fabDragState = null;
+            // 保存位置
+            saveAiFabPosition();
+            if (!wasDrag) {
+                toggleAiChat();
+            }
+        }
+
+        function saveAiFabPosition() {
+            const fab = document.getElementById('ai-chat-fab');
+            const left = fab.style.left;
+            const top = fab.style.top;
+            if (left && top && left !== 'auto' && top !== 'auto') {
+                try {
+                    localStorage.setItem('aiChatFabPos', JSON.stringify({ left, top }));
+                } catch(e) {}
+            }
+        }
+
+        function restoreAiFabPosition() {
+            try {
+                const saved = localStorage.getItem('aiChatFabPos');
+                const fab = document.getElementById('ai-chat-fab');
+                if (saved) {
+                    const pos = JSON.parse(saved);
+                    fab.style.left = pos.left;
+                    fab.style.top = pos.top;
+                } else {
+                    // 默认右下角
+                    fab.style.left = (window.innerWidth - 60 - 28) + 'px';
+                    fab.style.top = (window.innerHeight - 60 - 28) + 'px';
+                }
+                fab.style.bottom = 'auto';
+                fab.style.right = 'auto';
+            } catch(e) {}
+        }
+
+        // ===== 面板控制 =====
+        function toggleAiChat() {
+            const panel = document.getElementById('ai-chat-panel');
+            const overlay = document.getElementById('ai-chat-overlay');
+            const fab = document.getElementById('ai-chat-fab');
+            const mini = document.getElementById('ai-chat-minimized-bar');
+            if (panel.classList.contains('show') || panel.classList.contains('minimized')) {
+                closeAiChat();
+            } else {
+                panel.classList.remove('minimized');
+                panel.classList.add('show');
+                overlay.classList.add('show');
+                fab.classList.add('active');
+                mini.classList.remove('show');
+                updatePanelPosition();
+                setTimeout(() => document.getElementById('ai-chat-input').focus(), 300);
+            }
+        }
+
+        function closeAiChat() {
+            const panel = document.getElementById('ai-chat-panel');
+            const overlay = document.getElementById('ai-chat-overlay');
+            const fab = document.getElementById('ai-chat-fab');
+            const mini = document.getElementById('ai-chat-minimized-bar');
+            panel.classList.remove('show', 'minimized');
+            overlay.classList.remove('show');
+            fab.classList.remove('active');
+            mini.classList.remove('show');
+        }
+
+        function minimizeAiChat() {
+            const panel = document.getElementById('ai-chat-panel');
+            const overlay = document.getElementById('ai-chat-overlay');
+            const fab = document.getElementById('ai-chat-fab');
+            const mini = document.getElementById('ai-chat-minimized-bar');
+            panel.classList.remove('show');
+            panel.classList.add('minimized');
+            overlay.classList.remove('show');
+            fab.classList.remove('active');
+            mini.classList.add('show');
+            // 定位 minibar 到 FAB 旁边
+            updateMinibarPosition();
+        }
+
+        function restoreAiChat() {
+            const panel = document.getElementById('ai-chat-panel');
+            const overlay = document.getElementById('ai-chat-overlay');
+            const fab = document.getElementById('ai-chat-fab');
+            const mini = document.getElementById('ai-chat-minimized-bar');
+            panel.classList.remove('minimized');
+            panel.classList.add('show');
+            overlay.classList.add('show');
+            fab.classList.add('active');
+            mini.classList.remove('show');
+            updatePanelPosition();
+            setTimeout(() => document.getElementById('ai-chat-input').focus(), 300);
+        }
+
+        function updatePanelPosition() {
+            const panel = document.getElementById('ai-chat-panel');
+            const fab = document.getElementById('ai-chat-fab');
+            const fabRect = fab.getBoundingClientRect();
+            const panelW = 380;
+            const panelH = 560;
+            let left = fabRect.left + fabRect.width / 2 - panelW / 2;
+            let top = fabRect.top - panelH - 16;
+            // 空间不够则显示在 FAB 下方
+            if (top < 10) {
+                top = fabRect.bottom + 16;
+            }
+            left = Math.max(8, Math.min(left, window.innerWidth - panelW - 8));
+            // 如果超出底部，用上方
+            if (top + panelH > window.innerHeight - 10) {
+                top = fabRect.top - panelH - 16;
+            }
+            // 最终保险
+            top = Math.max(8, Math.min(top, window.innerHeight - panelH - 8));
+            panel.style.left = left + 'px';
+            panel.style.top = top + 'px';
+            panel.style.right = 'auto';
+            panel.style.bottom = 'auto';
+        }
+
+        function updateMinibarPosition() {
+            const mini = document.getElementById('ai-chat-minimized-bar');
+            const fab = document.getElementById('ai-chat-fab');
+            const fabRect = fab.getBoundingClientRect();
+            let left = fabRect.left + fabRect.width / 2 - 110;
+            let top = fabRect.top - 60;
+            if (top < 10) {
+                top = fabRect.bottom + 10;
+            }
+            left = Math.max(8, Math.min(left, window.innerWidth - 220 - 8));
+            mini.style.left = left + 'px';
+            mini.style.top = top + 'px';
+            mini.style.bottom = 'auto';
+            mini.style.right = 'auto';
+        }
+
+        // ===== 聊天功能 =====
+        async function sendFloatingChat() {
+            const input = document.getElementById('ai-chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const userId = getCurrentUserId();
+            if (!userId) { alert('请先登录'); return; }
+
+            addFloatingChatMessage(message, 'user');
+            input.value = '';
+
+            const sendBtn = document.getElementById('ai-chat-send-btn');
+            sendBtn.disabled = true;
+            sendBtn.textContent = '...';
+
+            try {
+                const response = await apiRequest('/ai/chat', 'POST', {
+                    user_id: userId,
+                    message: message,
+                    context: 'learning'
+                });
+                addFloatingChatMessage(stripMarkdown(response.reply), 'ai');
+            } catch (error) {
+                if (error.response && error.response.need_upgrade) {
+                    addFloatingChatMessage('本月免费次数已用完，升级VIP可无限使用。', 'ai');
+                } else {
+                    addFloatingChatMessage('抱歉，我遇到了一些问题，请稍后再试。', 'ai');
+                }
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = '发送';
+            }
+        }
+
+        function addFloatingChatMessage(text, sender) {
+            const container = document.getElementById('ai-chat-messages');
+            const div = document.createElement('div');
+            div.className = 'chat-message ' + sender;
+            const avatar = sender === 'user' ? '👤' : '🤖';
+            div.innerHTML = '<div class="chat-avatar">' + avatar + '</div><div class="chat-bubble">' + text + '</div>';
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
+</body>
+</html>

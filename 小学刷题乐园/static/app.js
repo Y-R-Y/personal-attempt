@@ -375,8 +375,10 @@ async function loadOrCreateUser() {
             }
             updateLoginStatus();
             
-            // 加载错题本
-            await loadWrongBook();
+            // 加载错题本（仅当页面存在错题本元素时）
+            if (document.getElementById('wrong-book-list')) {
+                await loadWrongBook();
+            }
             
             console.log('✓ 用户信息加载成功:', displayName, '用户名:', localStorage.getItem('username'));
         } catch (error) {
@@ -476,6 +478,25 @@ function escapeHtml(text) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+}
+
+// 清除Markdown格式符号，保留纯文本（全局，供多个页面使用）
+function stripMarkdown(text) {
+    return text
+        .replace(/\*\*(.+?)\*\*/g, '$1')
+        .replace(/__(.+?)__/g, '$1')
+        .replace(/^###\s+/gm, '')
+        .replace(/^##\s+/gm, '')
+        .replace(/^#\s+/gm, '')
+        .replace(/^[-*]\s+/gm, '• ')
+        .replace(/^\d+[.、]\s+/gm, '')
+        .replace(/^>+\s*/gm, '')
+        .replace(/```[\s\S]*?```/g, '')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/^---+$/gm, '')
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
 }
 
 async function loadWrongBook() {

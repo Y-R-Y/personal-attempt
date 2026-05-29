@@ -150,7 +150,21 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
     ''')
-    
+
+    # 订单表（支付用）
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            type TEXT NOT NULL,
+            amount REAL NOT NULL,
+            status TEXT DEFAULT 'pending',
+            created_at TEXT DEFAULT (datetime('now')),
+            paid_at TEXT,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    ''')
+
     conn.commit()
     
     # 检查并添加 avatar 字段（数据库迁移）
@@ -177,6 +191,31 @@ def init_db():
         cursor.execute('ALTER TABLE users ADD COLUMN monthly_ai_quota INTEGER DEFAULT 3')
         conn.commit()
         print("✓ 已添加 monthly_ai_quota 字段")
+
+    cursor.execute('PRAGMA table_info(orders)')
+    order_cols = [col[1] for col in cursor.fetchall()]
+    if 'payment_ref' not in order_cols:
+        cursor.execute('ALTER TABLE orders ADD COLUMN payment_ref TEXT DEFAULT ""')
+        conn.commit()
+        print("✓ 已添加 payment_ref 字段")
+    # check is_admin
+    if "is_admin" not in columns:
+        cursor.execute("ALTER TABLE users ADD COLUMN is_admin INTEGER DEFAULT 0")
+        conn.commit()
+        print("is_admin")
+        print("✓ 已添加 is_admin 字段")
+
+    # create default admin
+    cursor.execute("SELECT id FROM users WHERE username = ?", ("admin",))
+    if not cursor.fetchone():
+        admin_pw = hash_password("admin123")
+        cursor.execute("""
+            INSERT INTO users (username, password_hash, student_name, is_admin, last_login)
+            VALUES (?, ?, ?, 1, date('now'))
+        """, ("admin", admin_pw, "管理员"))
+        conn.commit()
+        print("admin account created")
+        print("✓ 默认管理员已创建 (admin / admin123)")
     
     # 检查是否需要导入初始题库
     cursor.execute('SELECT COUNT(*) FROM questions')
@@ -1658,7 +1697,7 @@ def create_subscription():
     # 计算价格
     prices = {
         'monthly': 1.0,
-        'yearly': 10.0
+        'yearly': 6.9
     }
     
     price = prices.get(subscription_type, 0)
@@ -1697,6 +1736,154 @@ def create_subscription():
         'end_date': end_date,
         'type': f'vip_{subscription_type}'
     })
+
+
+@app.route('/api/subscription/create-order', methods=['POST'])
+def create_order():
+    """创建支付订单"""
+    from datetime import datetime, timedelta
+
+    data = request.json
+    user_id = data.get('user_id')
+    sub_type = data.get('type')
+
+    if not user_id or not sub_type:
+        return jsonify({'error': '缺少必要参数'}), 400
+
+    prices = {'monthly': 1.0, 'yearly': 6.9}
+    amount = prices.get(sub_type)
+    if not amount:
+        return jsonify({'error': '无效的订阅类型'}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO orders (user_id, type, amount, status)
+        VALUES (?, ?, ?, 'pending')
+    ''', (user_id, sub_type, amount))
+    conn.commit()
+    order_id = cursor.lastrowid
+    conn.close()
+
+    qr_data = f"V2|{order_id}|{'M' if sub_type == 'monthly' else 'Y'}|{amount}"
+
+    return jsonify({
+        'success': True,
+        'order_id': order_id,
+        'amount': amount,
+        'qr_data': qr_data
+    })
+
+
+@app.route('/api/subscription/check-order', methods=['GET'])
+def check_order():
+    """检查订单支付状态"""
+    order_id = request.args.get('order_id')
+    if not order_id:
+        return jsonify({'error': '缺少order_id'}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM orders WHERE id = ?', (order_id,))
+    order = cursor.fetchone()
+    conn.close()
+
+    if not order:
+        return jsonify({'error': '订单不存在'}), 404
+
+    return jsonify({'status': order['status']})
+
+
+@app.route('/api/subscription/confirm-order', methods=['POST'])
+def confirm_order():
+    """确认支付并开通VIP"""
+    from datetime import datetime, timedelta
+
+    data = request.json
+    order_id = data.get('order_id')
+    payment_ref = data.get('payment_ref', '')
+    if not order_id:
+        return jsonify({'error': '缺少order_id'}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM orders WHERE id = ?', (order_id,))
+    order = cursor.fetchone()
+
+    if not order:
+        conn.close()
+        return jsonify({'error': '订单不存在'}), 404
+
+    if order['status'] == 'paid':
+        conn.close()
+        return jsonify({'error': '订单已支付'}), 400
+
+    cursor.execute('''
+        UPDATE orders SET status = 'paid', paid_at = datetime('now'), payment_ref = ?
+        WHERE id = ?
+    ''', (payment_ref, order_id))
+
+    sub_type = order['type']
+    if sub_type == 'monthly':
+        end_date = (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+    else:
+        end_date = (datetime.now() + timedelta(days=365)).strftime('%Y-%m-%d')
+
+    cursor.execute('''
+        INSERT OR REPLACE INTO user_subscriptions
+        (user_id, subscription_type, start_date, end_date, is_active)
+        VALUES (?, ?, date('now'), ?, 1)
+    ''', (order['user_id'], f'vip_{sub_type}', end_date))
+
+    cursor.execute('''
+        UPDATE users SET monthly_ai_quota = 9999 WHERE id = ?
+    ''', (order['user_id'],))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        'success': True,
+        'message': '开通成功',
+        'end_date': end_date,
+        'type': f'vip_{sub_type}'
+    })
+
+
+@app.route('/api/admin/orders/pending', methods=['GET'])
+def admin_pending_orders():
+    """管理员：查看所有待支付订单"""
+    conn = get_db()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT o.*, u.username
+        FROM orders o
+        LEFT JOIN users u ON o.user_id = u.id
+        WHERE o.status = 'pending'
+        ORDER BY o.created_at DESC
+    ''')
+    orders = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return jsonify({'orders': orders})
+
+
+@app.route('/api/admin/check', methods=['GET'])
+def admin_check():
+    """检查当前用户是否为管理员"""
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({'is_admin': False}), 200
+
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT is_admin FROM users WHERE id = ?', (user_id,))
+    user = cursor.fetchone()
+    conn.close()
+
+    if user and user['is_admin'] == 1:
+        return jsonify({'is_admin': True})
+    return jsonify({'is_admin': False})
 
 
 @app.route('/api/ai/generate-study-plan', methods=['POST'])

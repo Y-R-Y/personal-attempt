@@ -307,6 +307,226 @@
             color: var(--text-secondary);
             line-height: 1.6;
         }
+
+        /* 支付弹窗 */
+        .payment-modal {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.2s;
+        }
+        .payment-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: -1;
+        }
+        .payment-modal-content {
+            background: #FBE6DA;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+            animation: slideUp 0.3s;
+            overflow: hidden;
+        }
+        .payment-modal-header {
+            background: var(--gradient-primary);
+            color: #fff;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .payment-modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .payment-modal-close:hover {
+            background: rgba(255,255,255,0.35);
+        }
+        .payment-modal-body {
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .payment-qr-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #fff;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        .payment-amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: #D16023;
+            margin-bottom: 8px;
+        }
+        .payment-hint {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .payment-status {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            padding: 8px;
+            background: #FFF9F5;
+            border-radius: 8px;
+        }
+        .payment-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .payment-confirm-btn {
+            padding: 14px;
+            background: var(--gradient-primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .payment-confirm-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(209,96,35,0.35);
+        }
+        .payment-cancel-btn {
+            padding: 12px;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 2px solid #e8d0c4;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .payment-cancel-btn:hover {
+            background: #f0d8cc;
+            color: #3D1010;
+        }
+        .payment-qr-img {
+            display: block;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 16px;
+            border-radius: 12px;
+            background: #fff;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            object-fit: contain;
+        }
+        .payment-hint-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        .payment-ref-input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid #e8d0c4;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #FFF9F5;
+            color: #3D1010;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+        }
+        .payment-ref-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(209,96,35,0.12);
+        }
+        .payment-ref-input::placeholder {
+            color: #b8948a;
+        }
+        /* 管理员面板 */
+        .admin-order-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: #FFF9F5;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #D16023;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .admin-order-info {
+            flex: 1;
+            min-width: 200px;
+        }
+        .admin-order-id {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .admin-order-user {
+            font-size: 15px;
+            font-weight: 700;
+            color: #3D1010;
+        }
+        .admin-order-amount {
+            font-size: 20px;
+            font-weight: 800;
+            color: #D16023;
+        }
+        .admin-order-time {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .admin-confirm-btn {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .admin-confirm-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16,185,129,0.35);
+        }
+        .admin-confirm-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .admin-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 30px;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
@@ -482,8 +702,8 @@
                         <div class="pricing-card recommended">
                             <div class="recommended-badge">推荐</div>
                             <div class="plan-name">年度VIP</div>
-                            <div class="plan-price">¥10<span>/年</span></div>
-                            <div class="plan-savings">省 ¥2</div>
+                            <div class="plan-price">¥6.9<span>/年</span></div>
+                            <div class="plan-savings">省 ¥5.1</div>
                             <ul class="plan-features">
                                 <li>所有AI功能无限次使用</li>
                                 <li>优先客服支持</li>
@@ -491,6 +711,16 @@
                                 <li>专属VIP标识</li>
                             </ul>
                             <button class="subscribe-btn" onclick="subscribe('yearly')">立即开通</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 管理员收款确认面板 (仅 ?admin=1 可见) -->
+                <div class="admin-section" id="admin-section" style="display:none;">
+                    <div class="pricing-section" style="border: 2px solid #e63946;">
+                        <h2 class="section-title">🔐 管理员 - 收款确认</h2>
+                        <div id="admin-order-list">
+                            <p style="color:var(--text-muted);text-align:center;padding:20px;">加载订单中...</p>
                         </div>
                     </div>
                 </div>
@@ -507,7 +737,7 @@
                     <div class="faq-item">
                         <div class="faq-question">Q: 如何支付？</div>
                         <div class="faq-answer">
-                            A: 目前支持模拟支付（测试用）。正式上线后将接入微信支付和支付宝，让您支付更便捷。
+                            A: 目前支持扫码支付（微信/支付宝）。点击开通后显示收款码，扫码付款后联系管理员开通VIP权限。
                         </div>
                     </div>
                     <div class="faq-item">
@@ -525,6 +755,24 @@
                 </div>
             </div>
         </main>
+
+        <!-- 支付弹窗 -->
+        <div class="payment-modal" id="payment-modal" style="display:none;">
+            <div class="payment-modal-overlay" onclick="closePaymentModal()"></div>
+            <div class="payment-modal-content">
+                <div class="payment-modal-header">
+                    <h3>💳 扫码支付</h3>
+                    <button class="payment-modal-close" onclick="closePaymentModal()">✕</button>
+                </div>
+                <div class="payment-modal-body">
+                    <img class="payment-qr-img" id="payment-qr-img" src="images/weixin_month.png" alt="收款码">
+                    <div class="payment-amount" id="payment-amount">¥0.0</div>
+                    <p class="payment-hint">请使用微信扫码支付</p>
+                    <p class="payment-hint-sub">付款后请联系管理员开通VIP权限</p>
+                    <button class="payment-cancel-btn" onclick="closePaymentModal()">关闭</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="config.js"></script>
@@ -598,35 +846,112 @@
             }
         }
 
-        // 订阅VIP
+        // 支付相关
+        let paymentOrderId = null;
+
+        // 订阅VIP → 创建订单 → 弹支付窗
         async function subscribe(type) {
             const userId = getCurrentUserId();
-            if (!userId) {
-                alert('请先登录');
-                return;
-            }
-
-            const typeName = type === 'monthly' ? '月度VIP' : '年度VIP';
-            const price = type === 'monthly' ? '19.9' : '199';
-            
-            if (!confirm(`确定要开通${typeName}吗？\n价格：¥${price}`)) {
-                return;
-            }
+            if (!userId) { alert('请先登录'); return; }
 
             try {
-                const response = await apiRequest('/subscription/create', 'POST', {
+                const order = await apiRequest('/subscription/create-order', 'POST', {
                     user_id: userId,
                     type: type
                 });
+                paymentOrderId = order.order_id;
+                showPaymentModal(type, order.amount);
+            } catch (e) {
+                console.error('创建订单失败:', e);
+                alert('创建订单失败，请稍后重试。错误：' + (e.response?.error || e.message || '未知错误'));
+            }
+        }
 
-                if (response.success) {
-                    alert(`🎉 开通成功！\n到期时间：${response.end_date}`);
-                    // 刷新页面
-                    location.reload();
+        // 显示支付弹窗（展示真实收款码图片）
+        function showPaymentModal(type, amount) {
+            const modal = document.getElementById('payment-modal');
+            const amtEl = document.getElementById('payment-amount');
+            const qrImg = document.getElementById('payment-qr-img');
+            qrImg.src = 'images/weixin_' + type + '.png';
+            amtEl.textContent = '¥' + amount.toFixed(1);
+            modal.style.display = 'flex';
+        }
+
+        // 关闭支付弹窗
+        function closePaymentModal() {
+            document.getElementById('payment-modal').style.display = 'none';
+        }
+
+        // ===== 管理员面板 (?admin=1) =====
+        if (window.location.search.includes('admin=1')) {
+            checkAdminAndLoad();
+        }
+
+        async function checkAdminAndLoad() {
+            const userId = getCurrentUserId();
+            if (!userId) {
+                document.getElementById('admin-order-list').innerHTML =
+                    '<p class="admin-empty">请先登录管理员账号</p>';
+                return;
+            }
+            try {
+                const res = await apiRequest('/admin/check?user_id=' + userId);
+                if (res.is_admin) {
+                    document.getElementById('admin-section').style.display = 'block';
+                    document.getElementById('admin-section').scrollIntoView({ behavior: 'smooth' });
+                    loadPendingOrders();
+                } else {
+                    document.getElementById('admin-order-list').innerHTML =
+                        '<p class="admin-empty">⚠️ 无管理员权限</p>';
                 }
-            } catch (error) {
-                alert('开通失败，请稍后重试');
-                console.error('开通VIP失败:', error);
+            } catch(e) {
+                document.getElementById('admin-order-list').innerHTML =
+                    '<p class="admin-empty">验证失败: ' + (e.response?.error || e.message) + '</p>';
+            }
+        }
+
+        async function loadPendingOrders() {
+            try {
+                const data = await apiRequest('/admin/orders/pending');
+                renderPendingOrders(data.orders || []);
+            } catch(e) {
+                document.getElementById('admin-order-list').innerHTML =
+                    '<p class="admin-empty">加载失败: ' + (e.response?.error || e.message) + '</p>';
+            }
+        }
+
+        function renderPendingOrders(orders) {
+            const container = document.getElementById('admin-order-list');
+            if (!orders.length) {
+                container.innerHTML = '<p class="admin-empty">✅ 暂无待处理的订单</p>';
+                return;
+            }
+            container.innerHTML = orders.map(o => `
+                <div class="admin-order-item">
+                    <div class="admin-order-info">
+                        <div class="admin-order-user">${escapeHtml(o.username || '用户#' + o.user_id)}</div>
+                        <div class="admin-order-id">订单 #${o.id} · ${o.type === 'monthly' ? '月度' : '年度'}VIP</div>
+                        <div class="admin-order-time">${o.created_at}</div>
+                    </div>
+                    <div class="admin-order-amount">¥${o.amount}</div>
+                    <button class="admin-confirm-btn" onclick="adminConfirm(${o.id}, this)">确认收款并开通</button>
+                </div>
+            `).join('');
+        }
+
+        async function adminConfirm(orderId, btn) {
+            if (!confirm('确认已收到这笔付款？VIP将立即开通。')) return;
+            btn.disabled = true;
+            btn.textContent = '开通中...';
+            try {
+                await apiRequest('/subscription/confirm-order', 'POST', { order_id: orderId });
+                btn.textContent = '✅ 已开通';
+                btn.style.background = '#94a3b8';
+                setTimeout(loadPendingOrders, 500);
+            } catch(e) {
+                alert('操作失败: ' + (e.response?.error || e.message));
+                btn.disabled = false;
+                btn.textContent = '确认收款并开通';
             }
         }
     </script>
