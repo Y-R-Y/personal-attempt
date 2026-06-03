@@ -465,68 +465,6 @@
         .payment-ref-input::placeholder {
             color: #b8948a;
         }
-        /* 管理员面板 */
-        .admin-order-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            background: #FFF9F5;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            border-left: 4px solid #D16023;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .admin-order-info {
-            flex: 1;
-            min-width: 200px;
-        }
-        .admin-order-id {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-        .admin-order-user {
-            font-size: 15px;
-            font-weight: 700;
-            color: #3D1010;
-        }
-        .admin-order-amount {
-            font-size: 20px;
-            font-weight: 800;
-            color: #D16023;
-        }
-        .admin-order-time {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        .admin-confirm-btn {
-            padding: 10px 24px;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        .admin-confirm-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(16,185,129,0.35);
-        }
-        .admin-confirm-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .admin-empty {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 30px;
-            font-size: 15px;
-        }
     </style>
 </head>
 <body>
@@ -582,6 +520,14 @@
                 <a href="vip.html" class="menu-item active">
                     <span class="menu-item-icon">👑</span>
                     <span>VIP会员</span>
+                </a>
+                <a href="#" class="menu-item" onclick="openContactModal(event); return false;">
+                    <span class="menu-item-icon">✉️</span>
+                    <span>联系管理员</span>
+                </a>
+                <a href="admin-vip.html" class="menu-item" id="nav-admin-link" style="display:none;">
+                    <span class="menu-item-icon">🔐</span>
+                    <span>VIP管理</span>
                 </a>
             </nav>
             
@@ -715,17 +661,7 @@
                     </div>
                 </div>
 
-                <!-- 管理员收款确认面板 (仅 ?admin=1 可见) -->
-                <div class="admin-section" id="admin-section" style="display:none;">
-                    <div class="pricing-section" style="border: 2px solid #e63946;">
-                        <h2 class="section-title">🔐 管理员 - 收款确认</h2>
-                        <div id="admin-order-list">
-                            <p style="color:var(--text-muted);text-align:center;padding:20px;">加载订单中...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ -->
+<!-- FAQ -->
                 <div class="faq-section">
                     <h2 class="section-title">❓ 常见问题</h2>
                     <div class="faq-item">
@@ -882,77 +818,9 @@
             document.getElementById('payment-modal').style.display = 'none';
         }
 
-        // ===== 管理员面板 (?admin=1) =====
+        // ===== 兼容旧版 ?admin=1 访问 - 重定向到新的管理页面 =====
         if (window.location.search.includes('admin=1')) {
-            checkAdminAndLoad();
-        }
-
-        async function checkAdminAndLoad() {
-            const userId = getCurrentUserId();
-            if (!userId) {
-                document.getElementById('admin-order-list').innerHTML =
-                    '<p class="admin-empty">请先登录管理员账号</p>';
-                return;
-            }
-            try {
-                const res = await apiRequest('/admin/check?user_id=' + userId);
-                if (res.is_admin) {
-                    document.getElementById('admin-section').style.display = 'block';
-                    document.getElementById('admin-section').scrollIntoView({ behavior: 'smooth' });
-                    loadPendingOrders();
-                } else {
-                    document.getElementById('admin-order-list').innerHTML =
-                        '<p class="admin-empty">⚠️ 无管理员权限</p>';
-                }
-            } catch(e) {
-                document.getElementById('admin-order-list').innerHTML =
-                    '<p class="admin-empty">验证失败: ' + (e.response?.error || e.message) + '</p>';
-            }
-        }
-
-        async function loadPendingOrders() {
-            try {
-                const data = await apiRequest('/admin/orders/pending');
-                renderPendingOrders(data.orders || []);
-            } catch(e) {
-                document.getElementById('admin-order-list').innerHTML =
-                    '<p class="admin-empty">加载失败: ' + (e.response?.error || e.message) + '</p>';
-            }
-        }
-
-        function renderPendingOrders(orders) {
-            const container = document.getElementById('admin-order-list');
-            if (!orders.length) {
-                container.innerHTML = '<p class="admin-empty">✅ 暂无待处理的订单</p>';
-                return;
-            }
-            container.innerHTML = orders.map(o => `
-                <div class="admin-order-item">
-                    <div class="admin-order-info">
-                        <div class="admin-order-user">${escapeHtml(o.username || '用户#' + o.user_id)}</div>
-                        <div class="admin-order-id">订单 #${o.id} · ${o.type === 'monthly' ? '月度' : '年度'}VIP</div>
-                        <div class="admin-order-time">${o.created_at}</div>
-                    </div>
-                    <div class="admin-order-amount">¥${o.amount}</div>
-                    <button class="admin-confirm-btn" onclick="adminConfirm(${o.id}, this)">确认收款并开通</button>
-                </div>
-            `).join('');
-        }
-
-        async function adminConfirm(orderId, btn) {
-            if (!confirm('确认已收到这笔付款？VIP将立即开通。')) return;
-            btn.disabled = true;
-            btn.textContent = '开通中...';
-            try {
-                await apiRequest('/subscription/confirm-order', 'POST', { order_id: orderId });
-                btn.textContent = '✅ 已开通';
-                btn.style.background = '#94a3b8';
-                setTimeout(loadPendingOrders, 500);
-            } catch(e) {
-                alert('操作失败: ' + (e.response?.error || e.message));
-                btn.disabled = false;
-                btn.textContent = '确认收款并开通';
-            }
+            window.location.href = 'admin-vip.html';
         }
     </script>
 </body>

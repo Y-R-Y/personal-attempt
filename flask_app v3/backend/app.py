@@ -165,6 +165,19 @@ def init_db():
         )
     ''')
 
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS contact_messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            name TEXT NOT NULL,
+            contact TEXT NOT NULL,
+            message TEXT NOT NULL,
+            created_at TEXT DEFAULT (datetime('now')),
+            is_read INTEGER DEFAULT 0,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    ''')
+
     conn.commit()
     
     # 检查并添加 avatar 字段（数据库迁移）
@@ -1884,6 +1897,125 @@ def admin_check():
     if user and user['is_admin'] == 1:
         return jsonify({'is_admin': True})
     return jsonify({'is_admin': False})
+
+
+@app.route('/api/contact/submit', methods=['POST'])
+def contact_submit():
+    """用户提交联系管理员留言"""
+    from datetime import datetime, timedelta
+
+    data = request.json
+    name = (data.get('name') or '').strip()
+    contact = (data.get('contact') or '').strip()
+    message = (data.get('message') or '').strip()
+    user_id = data.get('user_id')
+
+    # 验证
+    if not name:
+        return jsonify({'error': '请输入您的名称'}), 400
+    if not contact:
+        return jsonify({'error': '请输入联系方式'}), 400
+    if len(name) > 50:
+        return jsonify({'error': '名称不能超过50个字符'}), 400
+    if len(contact) > 100:
+        return jsonify({'error': '联系方式不能超过100个字符'}), 400
+    if not message:
+        return jsonify({'error': '请输入留言内容'}), 400
+    if len(message) < 10:
+        return jsonify({'error': '留言内容不能少于10个字符'}), 400
+    if len(message) > 1000:
+        return jsonify({'error': '留言内容不能超过1000个字符'}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # 频率限制：同一用户5分钟内只能发1条
+    since = (datetime.now() - timedelta(minutes=5)).strftime('%Y-%m-%d %H:%M:%S')
+    if user_id:
+        cursor.execute(
+            'SELECT id FROM contact_messages WHERE user_id = ? AND created_at > ?',
+            (user_id, since)
+        )
+    else:
+        cursor.execute(
+            'SELECT id FROM contact_messages WHERE name = ? AND contact = ? AND created_at > ?',
+            (name, contact, since)
+        )
+    if cursor.fetchone():
+        conn.close()
+        return jsonify({'error': '请5分钟后再发送消息'}), 429
+
+    cursor.execute('''
+        INSERT INTO contact_messages (user_id, name, contact, message)
+        VALUES (?, ?, ?, ?)
+    ''', (user_id, name, contact, message))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True, 'message': '消息已发送，管理员会尽快回复您'})
+
+
+@app.route('/api/admin/messages', methods=['GET'])
+def admin_get_messages():
+    """管理员：查看所有用户留言"""
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({'error': '缺少user_id参数'}), 400
+
+    conn = get_db()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    # 验证管理员身份
+    cursor.execute('SELECT is_admin FROM users WHERE id = ?', (user_id,))
+    user = cursor.fetchone()
+    if not user or user['is_admin'] != 1:
+        conn.close()
+        return jsonify({'error': '无管理员权限'}), 403
+
+    cursor.execute('''
+        SELECT cm.*, u.username
+        FROM contact_messages cm
+        LEFT JOIN users u ON cm.user_id = u.id
+        ORDER BY cm.is_read ASC, cm.created_at DESC
+    ''')
+    messages = [dict(row) for row in cursor.fetchall()]
+
+    cursor.execute('SELECT COUNT(*) as cnt FROM contact_messages WHERE is_read = 0')
+    unread_count = cursor.fetchone()['cnt']
+    conn.close()
+
+    return jsonify({'messages': messages, 'unread_count': unread_count})
+
+
+@app.route('/api/admin/messages/mark-read', methods=['POST'])
+def admin_mark_message_read():
+    """管理员：标记留言为已读"""
+    data = request.json
+    message_id = data.get('id')
+    user_id = data.get('user_id')
+
+    if not user_id:
+        return jsonify({'error': '缺少user_id参数'}), 400
+    if not message_id:
+        return jsonify({'error': '缺少message_id'}), 400
+
+    conn = get_db()
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    # 验证管理员身份
+    cursor.execute('SELECT is_admin FROM users WHERE id = ?', (user_id,))
+    user = cursor.fetchone()
+    if not user or user['is_admin'] != 1:
+        conn.close()
+        return jsonify({'error': '无管理员权限'}), 403
+
+    cursor.execute('UPDATE contact_messages SET is_read = 1 WHERE id = ?', (message_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({'success': True})
 
 
 @app.route('/api/ai/generate-study-plan', methods=['POST'])

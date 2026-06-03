@@ -30,7 +30,9 @@
       "Bash(curl -s http://localhost:5000/account-security)",
       "Bash(curl -s http://localhost:5000/vip)",
       "Bash(curl -s http://localhost:5000/wrong-book)",
-      "Bash(curl -s http://localhost:5000/account-security.html)"
+      "Bash(curl -s http://localhost:5000/account-security.html)",
+      "Bash(pip list *)",
+      "Bash(pip install *)"
     ]
   }
 }

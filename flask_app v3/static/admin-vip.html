@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#D16023">
+    <title>管理员中心 - 小学刷题乐园</title>
+    <link rel="stylesheet" href="styles.css?v=2">
+    <style>
+        .admin-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #D16023 0%, #843510 100%);
+            border-radius: 20px;
+            padding: 32px 40px;
+            color: white;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(209, 96, 35, 0.3);
+        }
+        .admin-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .admin-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        /* 统计卡片 */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .admin-stat-card {
+            background: #FBE6DA;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .admin-stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #D16023;
+        }
+        .admin-stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* 订单区域 */
+        .admin-section {
+            background: #FBE6DA;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .admin-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .admin-section-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* 订单表格 */
+        .admin-table-wrap {
+            overflow-x: auto;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #FFF9F5;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .admin-table th {
+            background: #e8d0c4;
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 700;
+            color: #3D1010;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .admin-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e8d0c4;
+            font-size: 14px;
+            color: var(--text-primary);
+            vertical-align: middle;
+        }
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+        .admin-table tr:hover td {
+            background: rgba(209, 96, 35, 0.04);
+        }
+
+        /* 类型标签 */
+        .order-type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .order-type-badge.monthly {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .order-type-badge.yearly {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        /* 确认按钮 */
+        .admin-confirm-btn {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .admin-confirm-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+        }
+        .admin-confirm-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 刷新按钮 */
+        .admin-refresh-btn {
+            padding: 8px 18px;
+            background: #FFF9F5;
+            color: var(--text-primary);
+            border: 2px solid #e8d0c4;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .admin-refresh-btn:hover {
+            background: #e8d0c4;
+        }
+        .admin-refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* 状态提示 */
+        .admin-loading,
+        .admin-empty,
+        .admin-error {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+        .admin-error {
+            color: var(--danger);
+        }
+        .admin-error .retry-link {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .admin-error .retry-link:hover {
+            background: var(--primary-dark);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .admin-page {
+                padding: 16px;
+            }
+            .admin-header {
+                padding: 24px 20px;
+            }
+            .admin-header h1 {
+                font-size: 22px;
+            }
+            .admin-section {
+                padding: 20px;
+            }
+            .admin-table th,
+            .admin-table td {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏导航 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🎓 刷题乐园</h1>
+                <p class="subtitle">趣味闯关 · 快乐学习</p>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="index.html" class="menu-item">
+                    <span class="menu-item-icon">🏠</span>
+                    <span>首页</span>
+                </a>
+                <a href="level.html?subject=math" class="menu-item">
+                    <span class="menu-item-icon">🔢</span>
+                    <span>数学</span>
+                </a>
+                <a href="level.html?subject=chinese" class="menu-item">
+                    <span class="menu-item-icon">📖</span>
+                    <span>语文</span>
+                </a>
+                <a href="level.html?subject=english" class="menu-item">
+                    <span class="menu-item-icon">🔤</span>
+                    <span>英语</span>
+                </a>
+                <a href="level.html?subject=science" class="menu-item">
+                    <span class="menu-item-icon">🔬</span>
+                    <span>科学</span>
+                </a>
+                <a href="level.html?subject=history" class="menu-item">
+                    <span class="menu-item-icon">📜</span>
+                    <span>历史</span>
+                </a>
+                <a href="leaderboard.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>排行榜</span>
+                </a>
+                <a href="wrong-book.html" class="menu-item">
+                    <span class="menu-item-icon">📝</span>
+                    <span>错题本</span>
+                </a>
+                <a href="achievements.html" class="menu-item">
+                    <span class="menu-item-icon">🏆</span>
+                    <span>成就榜</span>
+                </a>
+                <a href="ai-assistant.html" class="menu-item">
+                    <span class="menu-item-icon">🤖</span>
+                    <span>AI学习助手</span>
+                </a>
+                <a href="vip.html" class="menu-item">
+                    <span class="menu-item-icon">👑</span>
+                    <span>VIP会员</span>
+                </a>
+                <a href="#" class="menu-item" onclick="openContactModal(event); return false;">
+                    <span class="menu-item-icon">✉️</span>
+                    <span>联系管理员</span>
+                </a>
+                <a href="admin-vip.html" class="menu-item active" id="nav-admin-link">
+                    <span class="menu-item-icon">🔐</span>
+                    <span>VIP管理</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="profile.html" class="menu-item" style="margin-bottom: 15px;">
+                    <span class="menu-item-icon">👤</span>
+                    <span>我的</span>
+                </a>
+                <button class="logout-btn" id="logout-btn" onclick="logout()" style="display:none;">🚪 退出登录</button>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <div class="admin-page">
+                <!-- 头部 -->
+                <div class="admin-header">
+                    <h1>🔐 管理员VIP开通管理</h1>
+                    <p>管理所有待处理的VIP订单，确认收款后即可为会员开通VIP权限</p>
+                </div>
+
+                <!-- 统计卡片 -->
+                <div class="admin-stats">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-value" id="stat-pending">0</div>
+                        <div class="admin-stat-label">待处理订单</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-value" id="stat-today">0</div>
+                        <div class="admin-stat-label">今日新增</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-value" id="stat-unread-msg">0</div>
+                        <div class="admin-stat-label">未读留言</div>
+                    </div>
+                </div>
+
+                <!-- 订单管理 -->
+                <div class="admin-section">
+                    <div class="admin-section-header">
+                        <h2>📋 待支付订单</h2>
+                        <button class="admin-refresh-btn" id="refresh-btn" onclick="loadPendingOrders()">🔄 刷新</button>
+                    </div>
+                    <div id="admin-order-list">
+                        <div class="admin-loading">⏳ 正在加载订单...</div>
+                    </div>
+                </div>
+
+                <!-- 留言管理 -->
+                <div class="admin-section" style="margin-top: 24px;">
+                    <div class="admin-section-header">
+                        <h2>📬 用户留言 <span class="unread-badge" id="unread-msg-badge" style="display:none;">0</span></h2>
+                        <button class="admin-refresh-btn" id="refresh-msg-btn" onclick="loadContactMessages()">🔄 刷新</button>
+                    </div>
+                    <div id="admin-messages-list">
+                        <div class="admin-loading">⏳ 正在加载留言...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // ===== 管理员VIP开通管理页面逻辑 =====
+
+        window.onload = function() {
+            if (!isLoggedIn()) {
+                showLoginRequiredModal();
+                return;
+            }
+            initApp();
+            checkAdminAndInit();
+        };
+
+        /**
+         * 检查管理员身份，加载订单
+         */
+        async function checkAdminAndInit() {
+            const userId = getCurrentUserId();
+            if (!userId) {
+                alert('请先登录管理员账号');
+                window.location.href = 'login.html?returnUrl=admin-vip.html';
+                return;
+            }
+            try {
+                const res = await apiRequest('/admin/check?user_id=' + userId);
+                if (res.is_admin) {
+                    loadPendingOrders();
+                    loadContactMessages();
+                    // 自动刷新：每30秒刷新一次
+                    setInterval(function() {
+                        loadPendingOrders();
+                        loadContactMessages();
+                    }, 30000);
+                } else {
+                    alert('⚠️ 无管理员权限，即将返回首页');
+                    window.location.href = 'index.html';
+                }
+            } catch (e) {
+                const container = document.getElementById('admin-order-list');
+                container.innerHTML = '<div class="admin-error">'
+                    + '❌ 权限验证失败: ' + escapeHtml(e.response?.error || e.message)
+                    + '<br><a class="retry-link" onclick="location.reload()">🔄 重试</a>'
+                    + '</div>';
+            }
+        }
+
+        /**
+         * 加载待处理订单
+         */
+        async function loadPendingOrders() {
+            const container = document.getElementById('admin-order-list');
+            const refreshBtn = document.getElementById('refresh-btn');
+            container.innerHTML = '<div class="admin-loading">⏳ 正在加载订单...</div>';
+            if (refreshBtn) refreshBtn.disabled = true;
+
+            try {
+                const data = await apiRequest('/admin/orders/pending');
+                renderOrders(data.orders || []);
+                updateStats(data.orders || []);
+            } catch (e) {
+                container.innerHTML = '<div class="admin-error">'
+                    + '❌ 加载失败: ' + escapeHtml(e.response?.error || e.message)
+                    + '<br><a class="retry-link" onclick="loadPendingOrders()">🔄 重试</a>'
+                    + '</div>';
+            } finally {
+                if (refreshBtn) refreshBtn.disabled = false;
+            }
+        }
+
+        /**
+         * 渲染订单表格
+         */
+        function renderOrders(orders) {
+            const container = document.getElementById('admin-order-list');
+
+            if (!orders || orders.length === 0) {
+                container.innerHTML = '<div class="admin-empty">✅ 暂无待处理的订单</div>';
+                return;
+            }
+
+            const typeMap = { monthly: '月度VIP', yearly: '年度VIP' };
+            const typeClass = { monthly: 'monthly', yearly: 'yearly' };
+
+            var html = '<div class="admin-table-wrap"><table class="admin-table">'
+                + '<thead><tr>'
+                + '<th>订单ID</th>'
+                + '<th>用户名</th>'
+                + '<th>类型</th>'
+                + '<th>金额</th>'
+                + '<th>创建时间</th>'
+                + '<th>操作</th>'
+                + '</tr></thead><tbody>';
+
+            orders.forEach(function(o) {
+                html += '<tr>'
+                    + '<td>#' + o.id + '</td>'
+                    + '<td><strong>' + escapeHtml(o.username || '用户#' + o.user_id) + '</strong></td>'
+                    + '<td><span class="order-type-badge ' + (typeClass[o.type] || 'monthly') + '">'
+                    + (typeMap[o.type] || o.type) + '</span></td>'
+                    + '<td><strong>¥' + parseFloat(o.amount).toFixed(2) + '</strong></td>'
+                    + '<td>' + (o.created_at || '') + '</td>'
+                    + '<td><button class="admin-confirm-btn" '
+                    + 'onclick="adminConfirm(' + o.id + ', this)">确认收款并开通</button></td>'
+                    + '</tr>';
+            });
+
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        }
+
+        /**
+         * 更新统计卡片
+         */
+        function updateStats(orders) {
+            document.getElementById('stat-pending').textContent = orders.length;
+
+            var today = new Date();
+            var todayStr = today.getFullYear() + '-'
+                + String(today.getMonth() + 1).padStart(2, '0') + '-'
+                + String(today.getDate()).padStart(2, '0');
+
+            var todayCount = 0;
+            orders.forEach(function(o) {
+                if (o.created_at && o.created_at.indexOf(todayStr) === 0) {
+                    todayCount++;
+                }
+            });
+            document.getElementById('stat-today').textContent = todayCount;
+        }
+
+        /**
+         * 管理员确认收款并开通VIP
+         */
+        async function adminConfirm(orderId, btn) {
+            if (!confirm('确认已收到这笔付款？VIP将立即开通。')) return;
+            btn.disabled = true;
+            btn.textContent = '开通中...';
+            try {
+                await apiRequest('/subscription/confirm-order', 'POST', { order_id: orderId });
+                btn.textContent = '✅ 已开通';
+                btn.style.background = '#94a3b8';
+                btn.style.cursor = 'default';
+                // 3秒后刷新列表
+                setTimeout(loadPendingOrders, 3000);
+            } catch (e) {
+                alert('操作失败: ' + (e.response?.error || e.message));
+                btn.disabled = false;
+                btn.textContent = '确认收款并开通';
+            }
+        }
+
+        /**
+         * HTML转义（防止XSS）
+         * 复用 app.js 中的 escapeHtml()
+         */
+
+        // ===== 留言管理 =====
+
+        /**
+         * 加载用户留言
+         */
+        async function loadContactMessages() {
+            var container = document.getElementById('admin-messages-list');
+            var badge = document.getElementById('unread-msg-badge');
+            var refreshBtn = document.getElementById('refresh-msg-btn');
+            container.innerHTML = '<div class="admin-loading">⏳ 正在加载留言...</div>';
+            if (refreshBtn) refreshBtn.disabled = true;
+
+            try {
+                var userId = getCurrentUserId();
+                var data = await apiRequest('/admin/messages?user_id=' + userId);
+                renderMessages(data.messages || []);
+                // 更新未读统计
+                var unread = data.unread_count || 0;
+                document.getElementById('stat-unread-msg').textContent = unread;
+                if (unread > 0) {
+                    badge.textContent = unread;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            } catch (e) {
+                container.innerHTML = '<div class="admin-error">'
+                    + '❌ 加载失败: ' + escapeHtml(e.response?.error || e.message)
+                    + '<br><a class="retry-link" onclick="loadContactMessages()">🔄 重试</a>'
+                    + '</div>';
+            } finally {
+                if (refreshBtn) refreshBtn.disabled = false;
+            }
+        }
+
+        /**
+         * 渲染留言表格
+         */
+        function renderMessages(messages) {
+            var container = document.getElementById('admin-messages-list');
+
+            if (!messages || messages.length === 0) {
+                container.innerHTML = '<div class="admin-empty">✅ 暂无用户留言</div>';
+                return;
+            }
+
+            var html = '<div class="admin-table-wrap"><table class="admin-table">'
+                + '<thead><tr>'
+                + '<th>ID</th>'
+                + '<th>用户</th>'
+                + '<th>联系方式</th>'
+                + '<th>留言内容</th>'
+                + '<th>时间</th>'
+                + '<th>状态</th>'
+                + '<th>操作</th>'
+                + '</tr></thead><tbody>';
+
+            messages.forEach(function(m) {
+                var isUnread = !m.is_read;
+                var rowClass = isUnread ? ' class="message-unread"' : '';
+                var preview = (m.message || '').substring(0, 50);
+                var hasMore = (m.message || '').length > 50;
+
+                html += '<tr' + rowClass + '>'
+                    + '<td>#' + m.id + '</td>'
+                    + '<td><strong>' + escapeHtml(m.name || '') + '</strong>'
+                    + (m.username ? '<br><span style="font-size:12px;color:var(--text-muted);">@' + escapeHtml(m.username) + '</span>' : '')
+                    + '</td>'
+                    + '<td>' + escapeHtml(m.contact || '') + '</td>'
+                    + '<td>'
+                    + '<div class="contact-message-preview" id="msg-preview-' + m.id + '" onclick="toggleMessageDetail(' + m.id + ')">'
+                    + escapeHtml(preview)
+                    + (hasMore ? '<span class="contact-message-toggle">展开</span>' : '')
+                    + '</div>'
+                    + '<div class="contact-message-full" id="msg-full-' + m.id + '">'
+                    + escapeHtml(m.message || '')
+                    + '</div>'
+                    + '</td>'
+                    + '<td style="font-size:13px;white-space:nowrap;">' + (m.created_at || '') + '</td>'
+                    + '<td>'
+                    + (isUnread
+                        ? '<span class="status-badge-unread">未读</span>'
+                        : '<span class="status-badge-read">已读</span>')
+                    + '</td>'
+                    + '<td>'
+                    + (isUnread
+                        ? '<button class="message-read-btn" onclick="markMessageAsRead(' + m.id + ', this)">标记已读</button>'
+                        : '<span style="color:var(--text-muted);font-size:12px;">已处理</span>')
+                    + '</td>'
+                    + '</tr>';
+            });
+
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+        }
+
+        /**
+         * 展开/收起留言详情
+         */
+        function toggleMessageDetail(id) {
+            var full = document.getElementById('msg-full-' + id);
+            var preview = document.getElementById('msg-preview-' + id);
+            if (!full || !preview) return;
+
+            var isShowing = full.classList.contains('show');
+            if (isShowing) {
+                full.classList.remove('show');
+                preview.style.display = '';
+            } else {
+                full.classList.add('show');
+                preview.style.display = 'none';
+            }
+        }
+
+        /**
+         * 标记留言为已读
+         */
+        async function markMessageAsRead(messageId, btn) {
+            btn.disabled = true;
+            btn.textContent = '处理中...';
+            try {
+                var userId = getCurrentUserId();
+                await apiRequest('/admin/messages/mark-read', 'POST', {
+                    id: messageId,
+                    user_id: userId
+                });
+                // 刷新列表
+                loadContactMessages();
+            } catch (e) {
+                alert('操作失败: ' + (e.response?.error || e.message));
+                btn.disabled = false;
+                btn.textContent = '标记已读';
+            }
+        }
+    </script>
+</body>
+</html>

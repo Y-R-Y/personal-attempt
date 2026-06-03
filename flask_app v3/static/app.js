@@ -143,6 +143,238 @@ function closeLoginModal() {
     }
 }
 
+// ===== 联系管理员弹窗 =====
+
+/**
+ * 打开联系管理员弹窗
+ */
+function openContactModal(e) {
+    if (e) e.preventDefault();
+    var existing = document.getElementById('contact-modal');
+    if (existing) {
+        existing.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        resetContactForm();
+        return;
+    }
+    createContactModal();
+}
+
+/**
+ * 创建联系管理员弹窗 DOM
+ */
+function createContactModal() {
+    var html = [
+        '<div class="contact-modal" id="contact-modal" style="display:none;">',
+        '    <div class="contact-modal-overlay" onclick="closeContactModal()"></div>',
+        '    <div class="contact-modal-content">',
+        '        <div class="contact-modal-header">',
+        '            <h3>✉️ 联系管理员</h3>',
+        '            <button class="contact-modal-close" onclick="closeContactModal()">✕</button>',
+        '        </div>',
+        '        <div class="contact-modal-body">',
+        '            <!-- 表单状态 -->',
+        '            <div id="contact-form-state">',
+        '                <div class="contact-form">',
+        '                    <div class="contact-form-group">',
+        '                        <label class="contact-form-label">你的名称</label>',
+        '                        <input type="text" class="contact-form-input" id="contact-name-input" placeholder="请输入你的名字" maxlength="50">',
+        '                        <div class="contact-validation-error" id="contact-name-error">请输入名称</div>',
+        '                    </div>',
+        '                    <div class="contact-form-group">',
+        '                        <label class="contact-form-label">联系方式</label>',
+        '                        <input type="text" class="contact-form-input" id="contact-info-input" placeholder="微信 / QQ / 手机号" maxlength="100">',
+        '                        <div class="contact-validation-error" id="contact-info-error">请输入联系方式</div>',
+        '                    </div>',
+        '                    <div class="contact-form-group">',
+        '                        <label class="contact-form-label">留言内容</label>',
+        '                        <textarea class="contact-form-input contact-form-textarea" id="contact-message-input" placeholder="请描述您的问题或建议..." maxlength="1000" oninput="updateContactCharCount()"></textarea>',
+        '                        <div class="contact-validation-error" id="contact-message-error">请输入至少10个字符</div>',
+        '                        <div class="contact-form-hint"><span id="contact-char-count">0</span>/1000</div>',
+        '                    </div>',
+        '                    <button class="contact-submit-btn" id="contact-submit-btn" onclick="submitContactMessage()">',
+        '                        📩 发送消息',
+        '                    </button>',
+        '                </div>',
+        '            </div>',
+        '            <!-- 成功状态 -->',
+        '            <div class="contact-result-state" id="contact-success-state" style="display:none;">',
+        '                <div class="contact-result-icon">✅</div>',
+        '                <div class="contact-result-title">消息已发送！</div>',
+        '                <div class="contact-result-desc">管理员会尽快回复您，请耐心等待。</div>',
+        '                <button class="contact-submit-btn" style="margin-top:20px;" onclick="closeContactModal()">关闭</button>',
+        '            </div>',
+        '            <!-- 错误状态 -->',
+        '            <div class="contact-result-state" id="contact-error-state" style="display:none;">',
+        '                <div class="contact-result-icon">❌</div>',
+        '                <div class="contact-result-title">发送失败</div>',
+        '                <div class="contact-result-desc" id="contact-error-text">请稍后重试</div>',
+        '                <button class="contact-submit-btn" style="margin-top:12px;background:var(--gradient-primary);" onclick="retryContactSubmit()">🔄 重试</button>',
+        '            </div>',
+        '        </div>',
+        '    </div>',
+        '</div>'
+    ].join('\n');
+
+    document.body.insertAdjacentHTML('beforeend', html);
+
+    document.getElementById('contact-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    resetContactForm();
+}
+
+/**
+ * 重置联系表单
+ */
+function resetContactForm() {
+    var nameInput = document.getElementById('contact-name-input');
+    var infoInput = document.getElementById('contact-info-input');
+    var msgInput = document.getElementById('contact-message-input');
+
+    if (!nameInput) return;
+
+    // 清空表单
+    nameInput.value = '';
+    infoInput.value = '';
+    msgInput.value = '';
+
+    // 自动填充已登录用户名称
+    if (isLoggedIn()) {
+        var savedName = localStorage.getItem('studentName') || localStorage.getItem('username') || '';
+        if (savedName) nameInput.value = savedName;
+    }
+
+    // 隐藏所有错误提示
+    var errors = document.querySelectorAll('.contact-validation-error');
+    for (var i = 0; i < errors.length; i++) {
+        errors[i].style.display = 'none';
+    }
+
+    // 移除错误边框
+    var inputs = document.querySelectorAll('.contact-form-input');
+    for (var j = 0; j < inputs.length; j++) {
+        inputs[j].classList.remove('error');
+    }
+
+    // 显示表单状态，隐藏成功/错误状态
+    document.getElementById('contact-form-state').style.display = '';
+    document.getElementById('contact-success-state').style.display = 'none';
+    document.getElementById('contact-error-state').style.display = 'none';
+
+    // 重置提交按钮
+    var btn = document.getElementById('contact-submit-btn');
+    btn.disabled = false;
+    btn.innerHTML = '📩 发送消息';
+
+    // 重置字数
+    updateContactCharCount();
+}
+
+/**
+ * 更新字数统计
+ */
+function updateContactCharCount() {
+    var input = document.getElementById('contact-message-input');
+    var count = document.getElementById('contact-char-count');
+    if (input && count) {
+        count.textContent = input.value.length;
+    }
+}
+
+/**
+ * 提交留言
+ */
+async function submitContactMessage() {
+    var nameInput = document.getElementById('contact-name-input');
+    var infoInput = document.getElementById('contact-info-input');
+    var msgInput = document.getElementById('contact-message-input');
+
+    var name = (nameInput.value || '').trim();
+    var contact = (infoInput.value || '').trim();
+    var message = (msgInput.value || '').trim();
+
+    // 重置错误
+    var errors = document.querySelectorAll('.contact-validation-error');
+    for (var i = 0; i < errors.length; i++) {
+        errors[i].style.display = 'none';
+    }
+    var inputs = document.querySelectorAll('.contact-form-input');
+    for (var j = 0; j < inputs.length; j++) {
+        inputs[j].classList.remove('error');
+    }
+
+    // 验证
+    var hasError = false;
+    if (!name) {
+        document.getElementById('contact-name-error').style.display = 'block';
+        nameInput.classList.add('error');
+        hasError = true;
+    }
+    if (!contact) {
+        document.getElementById('contact-info-error').style.display = 'block';
+        infoInput.classList.add('error');
+        hasError = true;
+    }
+    if (!message || message.length < 10) {
+        document.getElementById('contact-message-error').style.display = 'block';
+        msgInput.classList.add('error');
+        hasError = true;
+    }
+    if (hasError) return;
+
+    // 提交中状态
+    var btn = document.getElementById('contact-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="contact-spinner"></span> 发送中...';
+    nameInput.disabled = true;
+    infoInput.disabled = true;
+    msgInput.disabled = true;
+
+    try {
+        var userId = getCurrentUserId() || null;
+        await apiRequest('/contact/submit', 'POST', {
+            name: name,
+            contact: contact,
+            message: message,
+            user_id: userId
+        });
+        // 成功
+        document.getElementById('contact-form-state').style.display = 'none';
+        document.getElementById('contact-success-state').style.display = 'block';
+    } catch (e) {
+        // 失败
+        var errMsg = e.response?.error || e.message || '网络错误，请稍后重试';
+        document.getElementById('contact-form-state').style.display = 'none';
+        document.getElementById('contact-error-text').textContent = errMsg;
+        document.getElementById('contact-error-state').style.display = 'block';
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '📩 发送消息';
+        nameInput.disabled = false;
+        infoInput.disabled = false;
+        msgInput.disabled = false;
+    }
+}
+
+/**
+ * 重试（从错误状态回到表单）
+ */
+function retryContactSubmit() {
+    document.getElementById('contact-error-state').style.display = 'none';
+    document.getElementById('contact-form-state').style.display = '';
+}
+
+/**
+ * 关闭联系管理员弹窗
+ */
+function closeContactModal() {
+    var modal = document.getElementById('contact-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
 /**
  * 跳转到登录页
  */
@@ -233,6 +465,29 @@ function updateLoginStatus() {
     }
 }
 
+/**
+ * 检查管理员状态，显示/隐藏管理员导航链接
+ * 所有包含 id="nav-admin-link" 的页面会自动显示/隐藏
+ */
+async function checkAndShowAdminLink() {
+    var adminLink = document.getElementById('nav-admin-link');
+    if (!adminLink) return;  // 页面没有管理员链接
+
+    var userId = getCurrentUserId();
+    if (!userId) {
+        adminLink.style.display = 'none';
+        return;
+    }
+
+    try {
+        var res = await apiRequest('/admin/check?user_id=' + userId);
+        adminLink.style.display = (res.is_admin === true) ? 'flex' : 'none';
+    } catch (e) {
+        console.error('检查管理员状态失败:', e);
+        adminLink.style.display = 'none';
+    }
+}
+
 // ============== 应用状态 ==============
 let appState = {
     userId: null,
@@ -290,7 +545,10 @@ async function initApp() {
     
     // 加载或创建用户
     await loadOrCreateUser();
-    
+
+    // 检查管理员状态（显示/隐藏管理链接）
+    await checkAndShowAdminLink();
+
     // 加载头像（在首页和个人中心都显示）
     loadAvatar();
     
